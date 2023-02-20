@@ -1,4 +1,4 @@
-##Jeremy Koelmel  jeremykoelmel@gmail.com
+`##Jeremy Koelmel  jeremykoelmel@gmail.com
 ##Nick Kroeger    nkroeger.cs@gmail.com
 ##Paul Stelben    paul.stelben@yale.edu
 
@@ -125,11 +125,11 @@ options(warn=-1)#suppress warning on
 errorBox <- function(message) {
   window <- gwindow("Confirm")
   group <- ggroup(container = window)
-  
+
   ## A group for the message and buttons
   inner.group <- ggroup(horizontal=FALSE, container = group)
   glabel(message, container=inner.group, expand=TRUE, icon="error")
-  
+
   ## A group to organize the buttons
   button.group <- ggroup(container = inner.group)
   ## Push buttons to right
@@ -150,53 +150,53 @@ library(mzR)
 
 
 if (ManuallyInputVariables==TRUE){
-  
+
   #Retention Time plus or minus
   RT_Window <- .3 #window of .2 => +/- .1
-  
+
   #parts-per-million window for matching the m/z of fragments obtained in the library to those in experimentally obtained
   ppm_Window <- 10 #window of 10 => +/- 5 ppm error
-  
+
   #Tolerance for mass-to-charge matching at ms1 level (Window)
   PrecursorMassAccuracy<-0.01
-  
+
   #Plus minus range for the mass given after targeting parent ions portrayed in excalibur to match exact mass of Lipid in library
   SelectionAccuracy<-1
-  
+
   #Threshold for determining that the average signal intensity for a given MS/MS ion should be used for confirmation
   intensityCutOff<-1000
-  
+
   #Feature Table information
   CommentColumn <- 1
   MZColumn <- 2
   RTColumn <- 3
   RowStartForFeatureTableData <- 2 #Look at your Feature Table (.csv)...What row do you first see numbers?
-  
-  
+
+
   #ddMS data? set this parameter. If not? Leave it.
   #The minimum number of scans required for the result to be a confirmation
   ScanCutOff<-1
-  
+
   #Have AIF data? set these parameters. If not? Leave them.
   corrMin <-.6
   minNumberOfAIFScans <- 5
-  
+
   # Input Directory for Feature Table and MS2 files ...must have forward slashes but nothing at the end of the directory
   InputDirectory<-"C:/Users/Jeremy Koelmel/Downloads/LipidMatch_Flow_3.5/LipidMatch_Flow_3.5/LipidMatch_Modular/ExampleData"
-  
+
   # Input Directory for Libraries ...must have forward slashes but nothing at the end of the directory
   InputLibrary<-"C:/Users/Jeremy Koelmel/Downloads/LipidMatch_Flow_3.5/LipidMatch_Flow_3.5/LipidMatch_Modular/LipidMatch_Libraries_Acetate"
-  
+
   ## PFAS Specific parameters
   # RT_flagging <- TRUE #JPK: for PFAS analysis
   # Mass defect filtering
   upper <- 0.12 #JPK: Upper limit for PFAS mass defect
   lower <- -0.11 #JPK: Lower limit for PFAS mass defect
-  
+
   #Check your parameters and see that they are all correct.
   #Then press ctrl+shift+s to execute all code.
   ####################### END MANUALLY INPUTTING VARIABLES SECTION #######################
-  
+
 }else if(csvInput == TRUE){
   ####################### Get input from csv VARIABLES SECTION ###############################
   #parametersDirectory
@@ -207,43 +207,43 @@ if (ManuallyInputVariables==TRUE){
   ErrorOutput<-0
   #Retention Time plus or minus
   RT_Window <- as.numeric(parametersInput_csv[2,2]) #window of .2 => +/- .1
-  
+
   #parts-per-million window for matching the m/z of fragments obtained in the library to those in experimentally obtained
   ppm_Window <- as.numeric(parametersInput_csv[4,2]) #window of 10 => +/- 5 ppm error
-  
+
   #Tolerance for mass-to-charge matching at ms1 level (Window)
   PrecursorMassAccuracy <- as.numeric(parametersInput_csv[3,2])
-  
+
   #Plus minus range for the mass given after targeting parent ions portrayed in excalibur to match exact mass of Lipid in library
   SelectionAccuracy <- as.numeric(parametersInput_csv[5,2])
-  
+
   #Threshold for determining that the average signal intensity for a given MS/MS ion should be used for confirmation
   intensityCutOff <- as.numeric(parametersInput_csv[7,2])
-  
+
   #Feature Table information
   CommentColumn <- as.numeric(parametersInput_csv[10,2])
   MZColumn <- as.numeric(parametersInput_csv[11,2])
   RTColumn <- as.numeric(parametersInput_csv[12,2])
   RowStartForFeatureTableData <- as.numeric(parametersInput_csv[13,2]) #Look at your Feature Table (.csv)...What row do you first see numbers?
-  
+
   #ddMS data? set this parameter. If not? Leave it.
   #The minimum number of scans required for the result to be a confirmation
   ScanCutOff<-as.numeric(parametersInput_csv[6,2])
-  
+
   #Have AIF data? set these parameters. If not? Leave them.
   corrMin <-as.numeric(parametersInput_csv[9,2])
   minNumberOfAIFScans <- as.numeric(parametersInput_csv[8,2])
-  
+
   # Input Directory for Feature Table and MS2 files ...must have \\ (double backslash) at the end of the directory
   InputDirectory<-as.character(parametersInput_csv[14,2])
   InputDirectory = substring(InputDirectory,1, nchar(InputDirectory)-1)
-  
+
   # Input Directory for Libraries ...must have \\ (double backslash) at the end of the directory
   InputLibrary<-as.character(parametersInput_csv[15,2])
   InputLibrary = substring(InputLibrary,1, nchar(InputLibrary)-1)
-  
+
   GroupCSVDirectory<-as.character(parametersInput_csv[20,2])
-  
+
   ## PFAS Specific parameters
   RT_flagging <- TRUE #JPK: for PFAS analysis
   # Mass defect filtering
@@ -251,14 +251,14 @@ if (ManuallyInputVariables==TRUE){
   lower <- -0.11 #JPK: Lower limit for PFAS mass defect
 }else{
   ####################### Pop-up boxes input VARIABLES SECTION ###############################
-  
+
   # check if R version is equal to, or between, version 2.0.3 and 3.3.3, otherwise present pop-up box warning
   # Comment out for now
   # if(!((as.numeric(paste(version$major,version$minor,sep=""))>=20.3) && (as.numeric(paste(version$major,version$minor,sep=""))<=33.3))) {
   # errorBox(message=paste("ERROR: R version must be equal to, or between, 2.0.3 and 3.3.3. Please download 3.3.3. You are using version: ", paste(version$major,version$minor,sep=".")))
   # stop(paste("R version must be equal to, or between, 2.0.3 and 3.3.3. Please download 3.3.3. You are using version: ", paste(version$major,version$minor,sep=".")))
   # }
-  
+
   ## Input Directory that holds each folder of .ms2 files & feature table (contains features, peak heights/areas, etc.) (.csv file)
   InputDirectory<-tk_choose.dir(caption="Input Directory of MS2 + Feature Tables")
   if(is.na(InputDirectory)){
@@ -273,19 +273,19 @@ if (ManuallyInputVariables==TRUE){
       stop("Warning: Remove your 'Output' folder from the current Input Directory: ", InputDirectory)
     }
   }
-  
+
   ## Input Directory for Libraries
   InputLibrary<-tk_choose.dir(caption="Input Directory of libraries (came with LipidMatch)")
   if(is.na(InputLibrary)){
     stop()
   }
-  
+
   GroupCSVDirectory <- tk_choose.files(caption="If there are no groupings select CANCEL, Otherwise: \nInput file containing groupings \none column file with characters unique to each grouping\neach row as a seperate group",multi=FALSE)
-  
+
   GetInputAndErrorHandle <- function(typeOfVariable, message, title){
     isValidInput <- FALSE
     inputVariable <- ginput(message=message, title=title,icon="question")
-    
+
     while(!isValidInput){
       ##Retention Time plus or minus
       if(inputVariable == "d" || inputVariable == "D"){
@@ -312,7 +312,7 @@ if (ManuallyInputVariables==TRUE){
     }
     return(inputVariable)
   }
-  
+
   RT_Window <- GetInputAndErrorHandle("RT", message="Retention Time Window\n(Window of .3 => +/- .15)\nOr type \"d\" for default: .3", title="RT_Window")
   ppm_Window <- GetInputAndErrorHandle("ppm", message="Parts-per-million window for matching experimental and in-silico fragments m/z \n(Window of 10 => +/- 5)\nOr type \"d\" for default value: 10", title="ppm_Window")
   PrecursorMassAccuracy <- GetInputAndErrorHandle("precMassAccuracy", message="Mass accuracy window for matching experimental and in-silico precursors m.z\nfor full scan (precursor) mass matching \n(Window of .01 Da => +/- .005 Da)\nOr type \"d\" for default: .01", title="PrecMassAccuracyWindow")
@@ -327,7 +327,7 @@ if (ManuallyInputVariables==TRUE){
   RT_flagging <- TRUE #JPK: will simpy be default, changeable in code for now
   hasAIF <- FALSE
   hasdd <- FALSE
-  
+
   foldersToRun <- list.dirs(path=InputDirectory, full.names=FALSE, recursive=FALSE)
   if(length(foldersToRun)==0){
     lengthFoldersToRun <- 1 #if there are no subfolders, that means you have the faeture table and ms2s in that current directory, therefore, run analysis on those files.
@@ -339,15 +339,15 @@ if (ManuallyInputVariables==TRUE){
     numOfAIFFiles <- vector()
     if(length(foldersToRun)==0){#we're in current (and only) folder that contains feature table and ms2
       fpath <- InputDirectory
-      
+
     }else if(foldersToRun[i] == "Output"){
       fpath <- InputDirectory
       print(paste("Warning: Remove your 'Output' folder from the current Input Directory:", InputDirectory))
     }else{
       fpath <- file.path(InputDirectory, foldersToRun[i])
-      
+
     }
-    
+
     #separate ddMS and AIF
     numOfddFiles <- length(list.files(path=fpath, pattern="[dD][dD]", ignore.case=FALSE))
     numOfAIFFiles <- length(list.files(path=fpath, pattern="[aA][iI][fF]", ignore.case=FALSE))
@@ -369,7 +369,7 @@ if (ManuallyInputVariables==TRUE){
   if(hasdd){#then has ddMS
     ScanCutOff <- GetInputAndErrorHandle("scanCutOff", message="Minimum number of scans required for the result to be a confirmation (ddMS)\nOr type \"d\" for default: 1", title="ScanCutOff")
   }
-  
+
 } ####################### END AUTO INPUTTING VARIABLES SECTION ####################
 
 
@@ -395,7 +395,7 @@ if(ManuallyInputVariables==TRUE || csvInput == TRUE){
       print(paste("Warning: Remove your 'Output' folder from the current Input Directory:", InputDirectory))
     }else{
       fpath <- file.path(InputDirectory, foldersToRun[i])
-      
+
     }
     numOfAIFFiles <- length(list.files(path=fpath, pattern="[AIFaif][AIFaif][AIFaif]", ignore.case=FALSE))
     if(numOfAIFFiles %% 2 == 1){ #if # of AIF .ms2 or .ms1 are odd, STOP!
@@ -441,23 +441,23 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
   tStart<-Sys.time()
   ColCorrOR <- ConfirmORcol
   ColCorrAND <- ConfirmANDcol
-  
+
   if(!dir.exists(file.path(OutputDirectory,"Confirmed_Compounds"))){
     dir.create(file.path(OutputDirectory,"Confirmed_Compounds"))
   }
   if(!dir.exists(file.path(OutputDirectory,"Additional_Files"))){
     dir.create(file.path(OutputDirectory,"Additional_Files"))
   }
-  
+
   LibraryLipid<-read.csv(LibraryLipid_self, sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE)
   libraryLipidMZColumn <- ParentMZcol
   FeatureListMZColumn <- 1
-  
+
   ## Create a Library of Lipids and fragments for those masses in Feature List
   FeatureListHeader <- FeatureList[1,]
   LibraryLipidHeader <- LibraryLipid[1,]
   NewLibraryLipidHeader <- cbind(LibraryLipidHeader, FeatureListHeader)
-  
+
   sqlMerged <- sqldf(paste("select * from LibraryLipid lib inner join FeatureList iList on lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "-", PrecursorMassAccuracy, "<= iList.", colnames(FeatureList)[FeatureListMZColumn], " and iList.", colnames(FeatureList)[FeatureListMZColumn], " <= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "+", PrecursorMassAccuracy, sep = ""))
   # sqlMerged <- sqldf(paste("select * from LibraryLipid lib inner join FeatureList iList on iList.", colnames(FeatureList)[FeatureListMZColumn], " >= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], " -.005 and iList.", colnames(FeatureList)[FeatureListMZColumn], " <= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "+ .005", sep = ""))
   NewLibraryLipid <- as.matrix(sqlMerged)
@@ -465,16 +465,16 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
   colnames(NewLibraryLipid) <- colnames(NewLibraryLipidHeader)
   NewLibraryLipid <- rbind(NewLibraryLipidHeader,NewLibraryLipid)
   NewLibraryLipid <- NewLibraryLipid[,-(ncol(LibraryLipid)+1)] #removes mz from Feature list
-  
+
   #Removes 1 rt col and creates RT_min and RT_max cols based on RT_Window
   RT_Col <- as.numeric(NewLibraryLipid[2:nrow(NewLibraryLipid),ncol(NewLibraryLipid)-1])
   NewLibraryLipid <- NewLibraryLipid[,-(ncol(NewLibraryLipid)-1)]
   RT_Window_Vector <- rep(RT_Window/2, each=nrow(NewLibraryLipid)-1)
-  
+
   #Issue found 10/30 Removed Levels function
   RT_min <- RT_Col - as.numeric(RT_Window_Vector)
   RT_max <- RT_Col + as.numeric(RT_Window_Vector)
-  
+
   RT_min <- c("RT_min",RT_min)
   RT_max <- c("RT_max",RT_max)
   Comment <- NewLibraryLipid[,ncol(NewLibraryLipid)]
@@ -482,7 +482,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
   colnames(NewLibraryLipid) <- as.character(as.matrix(NewLibraryLipid[1,]))
   NewLibraryLipid <- NewLibraryLipid[-1,]
   NewLibraryLipid <- NewLibraryLipid[!is.na(NewLibraryLipid[,1]),!is.na(NewLibraryLipid[1,])]
-  
+
   startRTCol <- ncol(NewLibraryLipid)-2
   endRTCol <- startRTCol + 1
   LibParentHits_df <- NewLibraryLipid #name change
@@ -498,21 +498,21 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
     MaxIntensity_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
     NumOfScans_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
     AverageMZ_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
-    
+
     outputHeader <- colnames(LibParentHits_df) #get header from LibParentHits_df
     colnames(ConfirmedFragments_df) <- outputHeader
     colnames(RTMaxIntensity_df) <- outputHeader
     colnames(MaxIntensity_df) <- outputHeader
     colnames(NumOfScans_df) <- outputHeader
     colnames(AverageMZ_df) <- outputHeader
-    
+
     outputLibData <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
     ConfirmedFragments_df[,c(1,startRTCol:ncolLibParentHits)] <- outputLibData
     RTMaxIntensity_df[,c(1,startRTCol:ncolLibParentHits)] <- outputLibData
     MaxIntensity_df[,c(1,startRTCol:ncolLibParentHits)] <- outputLibData
     NumOfScans_df[,c(1,startRTCol:ncolLibParentHits)] <- outputLibData
     AverageMZ_df[,c(1,startRTCol:ncolLibParentHits)] <- outputLibData
-    
+
     ########################################################################################
     # loop through lib parent hits M+H column, see                                         #
     #   1) if the precursor(from ms2) falls within this targetAcccuracy mz window          #
@@ -523,7 +523,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
     #   ms2_df[[1, 3]][1, 1]                                                               #
     #         ^matrix ^[row, column] from matrix                                           #
     ########################################################################################
-    
+
     AIFms2SubsettedRTList <- list()
     for(p in seq_len(nrowLibParentHits)){
       RTConditional <- as.numeric(as.character(LibParentHits_df[p,startRTCol])) <= as.numeric(ms2_df[,2]) & as.numeric(ms2_df[,2]) <= as.numeric(as.character(LibParentHits_df[p,endRTCol]))
@@ -534,7 +534,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
       RTConditional <- as.numeric(as.character(LibParentHits_df[p,startRTCol])) <= as.numeric(ms1_df[,2]) & as.numeric(ms1_df[,2]) <= as.numeric(as.character(LibParentHits_df[p,endRTCol]))
       AIFms1SubsettedRTList[[p]] <- subset(ms1_df, RTConditional)
     }
-    
+
     ############################################################################
     #Building All_Confirmed data frame for output (ddMS and/or AIF)            #
     # Creates a list of dataframes for each section of the All_Confirmed.csv.  #
@@ -573,53 +573,53 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
         }
         subsettedFrag_df <- data.frame(scans, rt, frags, intensity)
         subsettedFragList[[p]] <- subsettedFrag_df
-        
+
         #Stores information into respective dataframes for output as All_Confirmed
         if(nrow(subsettedFragList[[p]])>0){#loop over list elements that have values
           #Max Intensity
           maxIntensity <- max(subsettedFragList[[p]][,4])
           MaxIntensity_df[p, c] <- maxIntensity
-          
+
           #Number of Scans
           numScans <- nrow(subsettedFragList[[p]])
           NumOfScans_df[p, c] <- numScans
-          
+
           #Confirming fragments
           if(sum(subsettedFragList[[p]][,4] > intensityCutOff) > 0 & (numScans >= minNumberOfAIFScans)){ #at least one fragment's intensity is above user inputed threshold and number of scans is greater than or equal to user inputed, ScansCutOff
             ConfirmedFragments_df[p, c] <- 1 #1 for yes, 0 for no. (ConfirmedFragments_df was initialized with all 0s)
           }
-          
+
           #RT at max intensity
           maxIntIndex <- which.max(subsettedFragList[[p]][,4])
           RTMaxInt <- subsettedFragList[[p]][maxIntIndex,2]
           RTMaxIntensity_df[p, c] <- RTMaxInt
-          
-          
+
+
           #Average m/z for confirmed fragment
           avgMZ <- mean(subsettedFragList[[p]][,3])
           AverageMZ_df[p, c] <- avgMZ
         }
       }
     }
-    
+
     #Creates df for output "AllConfirmed"
     AllConfirmed_df <- data.frame(matrix("", ncol = ncolLibParentHits*5, nrow = nrowLibParentHits))
-    
+
     blankColumn <- rep("", nrowLibParentHits)
-    
+
     AllConfirmed_df <- cbind(blankColumn, ConfirmedFragments_df, blankColumn, RTMaxIntensity_df, blankColumn, NumOfScans_df, blankColumn, MaxIntensity_df, blankColumn, AverageMZ_df, blankColumn, LibParentHits_df)
-    
+
     colnames(AllConfirmed_df)[1] <- paste("Confirmed fragments if intensity is above", intensityCutOff,"and number of scans is greater than or equal to", minNumberOfAIFScans)
     colnames(AllConfirmed_df)[ncolLibParentHits+2] <- "RT at Max Intensity"
     colnames(AllConfirmed_df)[ncolLibParentHits*2+3] <- "Number of Scans"
     colnames(AllConfirmed_df)[ncolLibParentHits*3+4] <- "Max Intensity"
     colnames(AllConfirmed_df)[ncolLibParentHits*4+5] <- "Average m/z"
     colnames(AllConfirmed_df)[ncolLibParentHits*5+6] <- "Theoretical, Library Parent Hits"
-    
+
     #DON'T WRITE THIS OUT. WE want to write out the final confirmed with Adj R2 and Slope
     # ConfirmedAll_dir<-paste(OutputDirectory,"Additional_Files//", ExtraFileNameInfo,"_All_confirmed.csv",sep="")
     # write.table(AllConfirmed_df, ConfirmedAll_dir, sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-    
+
     ## Code to reduce the dataset to lipids containing necessary fragments
     ## Start with both true, if no inputs then all rows are retained
     AllConfirmed_matrix<-as.matrix(AllConfirmed_df)
@@ -641,34 +641,34 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
     }
     ## Reduce the data set to those values which are TRUE for both the OR and AND fragments calculated in the two IF statements above
     DataCombinedConfirmed<-DataCombined[(OR_BinTruth+AND_BinTruth)>1,,drop=FALSE]
-    
+
     NoMatches_dir<-file.path(OutputDirectory,"Additional_Files", paste0(ExtraFileNameInfo,"_NoIDs.csv"))
     if(nrow(DataCombinedConfirmed)==0){
       write.table("No Confirmed Compounds Found",NoMatches_dir, col.names=FALSE, row.names=FALSE, quote=FALSE)
     }else{
       # ConfirmedReduced_dir <- paste(OutputDirectory,"Confirmed_Lipids//",ExtraFileNameInfo,"_reduced_confirmed.csv",sep="")
       # write.table(DataCombinedConfirmed, ConfirmedReduced_dir, sep=",",col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-      
+
       rowsToKeep <- as.numeric(row.names(DataCombinedConfirmed))-1 #used to reduce AIFms1SubsettedList and AIFms2SubsettedList
       AIFms1SubsettedRTList <- AIFms1SubsettedRTList[rowsToKeep]
       AIFms2SubsettedRTList <- AIFms2SubsettedRTList[rowsToKeep]
-      
+
       DataCombinedConfirmed_df <- as.data.frame(DataCombinedConfirmed)#reduced confirmed df
       nrowReduced <- nrow(DataCombinedConfirmed_df)
       ncolReduced <- ncol(DataCombinedConfirmed_df)
-      
+
       #gets the original theoretical library that was reduced
       LibInfoFromDataComb_df<- DataCombinedConfirmed_df[,(ncolReduced-ncolLibParentHits+1):ncolReduced]
-      
+
       colsToCorr <- c(ColCorrAND, ColCorrOR)
       numColsForAIF <- 4 + length(colsToCorr) #4 because ID, RTmin, RTmax, Comment
       nameOfMiddleColsForAIF <- vector()
       for(c in colsToCorr){#get "precursor vs fragment" header for output
         nameOfMiddleColsForAIF <- append(nameOfMiddleColsForAIF, paste(colnames(LibParentHits_df[ParentMZcol]), " vs ", colnames(LibParentHits_df[c]), sep=""))
       }
-      
+
       AIFHeader <- c(colnames(LibParentHits_df[1]), nameOfMiddleColsForAIF, colnames(LibParentHits_df[startRTCol:ncolLibParentHits])) #get header from LibParentHits_df
-      
+
       AdjR2_df <- data.frame(matrix(0, ncol = numColsForAIF, nrow = nrowReduced))
       Slope_df <- data.frame(matrix(0, ncol = numColsForAIF, nrow = nrowReduced))
       colnames(AdjR2_df) <- AIFHeader
@@ -676,7 +676,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
       outputLibData <- LibInfoFromDataComb_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from DataCombinedConfirmed_df
       AdjR2_df[,c(1,(numColsForAIF-2):numColsForAIF)] <- outputLibData
       Slope_df[,c(1,(numColsForAIF-2):numColsForAIF)] <- outputLibData
-      
+
       #correlate precursor from ms1 against predefined columns to correlate against from ms2
       for(c in colsToCorr){ #loop fragment columns to correlate against ms1
         for(p in seq_len(nrowReduced)){#loop all rows of reduced confirmed data frame
@@ -688,11 +688,11 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
           length_AIFms1SubsettedRTList <- length(AIFms1SubsettedRTList[[p]][,1])
           for(d in seq_len(length_AIFms1SubsettedRTList)){#store ms1 scan number and PRECURSOR intensity
             subsettedFrag <- vector(length=0)
-            
+
             #Take the theoretical LibParentHits fragment m/z and look within a ppm window through the scan's ms2 fragments
             AIFms1fragConditional <- (as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol])) - abs(as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol])) - as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol]))*PPM_CONST) <= as.numeric(AIFms1SubsettedRTList[[p]][,3][[d]][,1])) & (as.numeric(AIFms1SubsettedRTList[[p]][,3][[d]][,1]) <= as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol])) + abs(as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol])) - as.numeric(as.character(LibInfoFromDataComb_df[p, ParentMZcol]))*PPM_CONST))
             subsettedFrag <- subset(AIFms1SubsettedRTList[[p]][,3][[d]], AIFms1fragConditional)
-            
+
             #error handling if you find 2 fragments masses within a ppm window. Then what?
             if(nrow(subsettedFrag)>1){
               LibMass<-as.numeric(as.character(LibInfoFromDataComb_df[p, c]))
@@ -705,7 +705,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
                 subsettedFrag<-matrix(c(mean(as.numeric(subsettedFrag[,1])),mean(as.numeric(subsettedFrag[,2]))), 1, 2)
               }
             }
-            
+
             # print("------------MS1-----------------")
             # print(paste("d: ", d, "subsettedFrag:", subsettedFrag))
             if(nrow(subsettedFrag)==0){
@@ -718,7 +718,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
           length_AIFms2SubsettedRTList <- length(AIFms2SubsettedRTList[[p]][,1])
           for(d in seq_len(length_AIFms2SubsettedRTList)){#store ms2 intensity
             subsettedFrag <- vector(length=0)
-            
+
             #Take the theoretical LibParentHits fragment m/z and look within a ppm window through the scan's ms2 fragments
             AIFms2fragConditional <- as.numeric(as.character(LibInfoFromDataComb_df[p, c])) - abs(as.numeric(as.character(LibInfoFromDataComb_df[p, c])) - as.numeric(as.character(LibInfoFromDataComb_df[p, c]))*PPM_CONST) <= as.numeric(AIFms2SubsettedRTList[[p]][,3][[d]][,1]) & as.numeric(AIFms2SubsettedRTList[[p]][,3][[d]][,1]) <= as.numeric(as.character(LibInfoFromDataComb_df[p, c])) + abs(as.numeric(as.character(LibInfoFromDataComb_df[p, c])) - as.numeric(as.character(LibInfoFromDataComb_df[p, c]))*PPM_CONST)
             subsettedFrag <- subset(AIFms2SubsettedRTList[[p]][,3][[d]], AIFms2fragConditional)
@@ -733,7 +733,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
                 subsettedFrag<-matrix(c(mean(as.numeric(subsettedFrag[,1])),mean(as.numeric(subsettedFrag[,2]))), 1, 2)
               }
             }
-            
+
             # print("------------MS2-----------------")
             # print(paste("d: ", d, "subsettedFrag:", subsettedFrag))
             if(nrow(subsettedFrag)==0){
@@ -749,7 +749,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
           ms2Intensity <- as.numeric(ms2Intensity)
           ms1IntensityAveraged<-vector()
           ms1ScanNumAveraged <- vector()
-          
+
           #average each ms1's intensity that are next to eachother so we can correlate it against ms2
           length_ms1Intensity <- length(ms1Intensity)
           for(a in seq_len(length_ms1Intensity-1)){#-1 so I don't go out of bounds
@@ -763,14 +763,14 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
             averaged <- mean(c(ms1ScanNum[b], temp))
             ms1ScanNumAveraged <- append(ms1ScanNumAveraged, averaged)
           }
-          
+
           intensityCol1 <- ms1IntensityAveraged[ms1ScanNumAveraged %in% ms2ScanNum]
           intensityCol2 <- ms2Intensity[ms2ScanNum %in% ms1ScanNumAveraged]
-          
+
           #test for mininum number of couples (found fragments in both ms1 and ms2)
           intensitiesMultiplied <- intensityCol1*intensityCol2
           numOfCouples <- length(subset(intensitiesMultiplied, intensitiesMultiplied != 0))
-          
+
           columnToFill <- match(c, colsToCorr) + 1   # +1 because the ID column in AdjR2_df is column 1.
           #are there min number of user specified couples (Definition: Couples (noun) := fragment found in both ms1 and ms2 at the same scan time)
           if(numOfCouples < minNumberOfAIFScans){#bad, you get no adj R2
@@ -780,40 +780,40 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
             Slope_df[p,columnToFill] <- NA
           }else{
             fragCorr_df <- data.frame(ms1ScanNumAveraged, intensityCol1, intensityCol2)
-            
+
             intensityFit<-lm(fragCorr_df[,3]~fragCorr_df[,2])
             intensitySummary <- summary(intensityFit)
             intensityAdjR2 <- intensitySummary$adj.r.squared
             intensitySlope <- intensityFit$coefficients[2]
-            
+
             # if(intensityAdjR2 > corrMin){
             AdjR2_df[p,columnToFill] <- round(intensityAdjR2, 3)
             Slope_df[p,columnToFill] <- round(intensitySlope, 5)
             # }else{
-            
+
             #   AdjR2_df[p,columnToFill] <- NA
             #   Slope_df[p,columnToFill] <- NA
             # }
-            
+
             # print(fragCorr_df)
             ##We don't use this. But I'll keep it here. intensityCorr <- cor(fragCorr_df[,2],fragCorr_df[,3],use="complete.obs")##
           }
         }#end row loop
       }#end column loop
       # write the table out.
-      
+
       #remove theoretical library from end of DataCombinedConfirmed_df
       DataCombinedConfirmed_df <- DataCombinedConfirmed_df[,-((ncolReduced-ncolLibParentHits):ncolReduced)] #CAREFUL NICK! THIS MESSES WITH THE HEADER!...but I kinda like the .1 .2 .3. .4
       blankColumn <- rep("", nrowReduced)
       DataCombinedConfirmed_df <- cbind(DataCombinedConfirmed_df, blankColumn, AdjR2_df, blankColumn, Slope_df, blankColumn, LibInfoFromDataComb_df)
-      
+
       colnames(DataCombinedConfirmed_df)[ncolLibParentHits*5+6] <- paste("Adjusted R2, Precursor Intensity vs Fragment Intensity (AIF). AdjR2 > ", corrMin, sep="")
       colnames(DataCombinedConfirmed_df)[ncolLibParentHits*5+6 + numColsForAIF + 1] <- "Slope, Precursor Intensity vs Fragment Intensity (AIF)"
       colnames(DataCombinedConfirmed_df)[ncolLibParentHits*5+6 + numColsForAIF*2 + 2] <- "Theoretical, Library Parent Hits"
-      
+
       ConfirmedReduced_dir <- file.path(OutputDirectory,"Additional_Files", paste0(ExtraFileNameInfo,"_AdjR2Info.csv"))
       write.table(DataCombinedConfirmed_df, ConfirmedReduced_dir, sep=",",col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-      
+
       #Reduce matches based on ConfirmAndCol
       if(length(ConfirmANDcol) > 0){
         columnToFill<-vector()
@@ -837,7 +837,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
         rowsToKeep <- as.numeric(row.names(AdjR2_df)) #used to reduce final output table based on the reduced AdjR2_df rows from above ConfirmAND and ConfirmOR columns
         Slope_df <- Slope_df[rowsToKeep,]
         # AdjR2_df <- AdjR2_df[apply(AdjR2_df[columnToFill], 1, function(x) all(x > corrMin & !is.na(x))),]
-        
+
         # AdjR2_df <- AdjR2_df[apply(AdjR2_df[c(2,3)], 1, function(x) all((x > corrMin) & is.numeric(x))),]
       }
       #difference here is in the apply function.... "all" vs "any"
@@ -855,7 +855,7 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
           if(!is.numeric(Slope_df[,columnToFill])){#if the adjR2 column is already numeric, (don't change to as.numeric...this gives an error)
             Slope_df[,columnToFill] <- lapply(Slope_df[,columnToFill], as.numeric)
           }
-          
+
           #We want AdjR2 to be > corrMin and slopes to be positive!
           #set non positive slopes to NA
           Slope_df[,columnToFill] <- replace(Slope_df[,columnToFill],Slope_df[,columnToFill]<=0,NA)
@@ -864,18 +864,18 @@ RunAIF <- function(ms1_df, ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, 
           AdjR2_df <- AdjR2_df[apply(AdjR2_df[,columnToFill, drop=F], 1, function(x) any(x > corrMin)),]
         }
       }
-      
+
       rowsToKeep <- as.numeric(row.names(AdjR2_df)) #used to reduce final output table based on the reduced AdjR2_df rows from above ConfirmAND and ConfirmOR columns
       DataCombinedConfirmed_df <- DataCombinedConfirmed_df[rowsToKeep,]
-      
+
       ConfirmedReduced_dir <- file.path(OutputDirectory,"Confirmed_Compounds", paste0(ExtraFileNameInfo,"_IDed.csv"))
       if(nrow(DataCombinedConfirmed_df)>0){#don't output if there's nothing in the reduced file
         write.table(DataCombinedConfirmed_df, ConfirmedReduced_dir, sep=",",col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
       }
-      
-      
+
+
     }#end else (if there are matches after reduction step)
-    
+
     tEnd<-Sys.time()
     # Capture parameters used for this run and save them
     RunInfo<-matrix("",24,2)
@@ -907,16 +907,16 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
   }
   #store starting time
   tStart<-Sys.time()
-  
+
   LibraryLipid<-read.csv(LibraryLipid_self, sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE)
   libraryLipidMZColumn <- ParentMZcol
   FeatureListMZColumn <- 1
-  
+
   ## Create a Library of Lipids and fragments for those masses in Feature List
   FeatureListHeader <- FeatureList[1,]
   LibraryLipidHeader <- LibraryLipid[1,]
   NewLibraryLipidHeader <- cbind(LibraryLipidHeader, FeatureListHeader)
-  
+
   sqlMerged <- sqldf(paste("select * from LibraryLipid lib inner join FeatureList iList on lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "-", PrecursorMassAccuracy, "<= iList.", colnames(FeatureList)[FeatureListMZColumn], " and iList.", colnames(FeatureList)[FeatureListMZColumn], " <= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "+", PrecursorMassAccuracy, sep = ""))
   # sqlMerged <- sqldf(paste("select * from LibraryLipid lib inner join FeatureList iList on iList.", colnames(FeatureList)[FeatureListMZColumn], " >= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], " -.005 and iList.", colnames(FeatureList)[FeatureListMZColumn], " <= lib.", colnames(LibraryLipid)[libraryLipidMZColumn], "+ .005", sep = ""))
   NewLibraryLipid <- as.matrix(sqlMerged)
@@ -924,12 +924,12 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
   colnames(NewLibraryLipid) <- colnames(NewLibraryLipidHeader)
   NewLibraryLipid <- rbind(NewLibraryLipidHeader,NewLibraryLipid)
   NewLibraryLipid <- NewLibraryLipid[,-(ncol(LibraryLipid)+1)] #removes mz from Feature list
-  
+
   #Removes 1 rt col and creates RT_min and RT_max cols based on RT_Window
   RT_Col <- as.numeric(NewLibraryLipid[2:nrow(NewLibraryLipid),ncol(NewLibraryLipid)-1])
   NewLibraryLipid <- NewLibraryLipid[,-(ncol(NewLibraryLipid)-1)]
   RT_Window_Vector <- rep(RT_Window/2, each=nrow(NewLibraryLipid)-1)
-  
+
   #Issue found 10/30 Removed Levels function
   RT_min <- RT_Col - as.numeric(RT_Window_Vector)
   RT_max <- RT_Col + as.numeric(RT_Window_Vector)
@@ -940,7 +940,7 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
   colnames(NewLibraryLipid) <- as.character(as.matrix(NewLibraryLipid[1,]))
   NewLibraryLipid <- NewLibraryLipid[-1,]
   NewLibraryLipid <- NewLibraryLipid[!is.na(NewLibraryLipid[,1]),!is.na(NewLibraryLipid[1,])]
-  
+
   startRTCol <- ncol(NewLibraryLipid)-2
   endRTCol <- startRTCol + 1
   LibParentHits_df <- NewLibraryLipid #name change
@@ -956,19 +956,19 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
     MaxIntensity_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
     NumOfScans_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
     AverageMZ_df <- data.frame(matrix(0, ncol = ncolLibParentHits, nrow = nrowLibParentHits))
-    
+
     colnames(ConfirmedFragments_df) <- colnames(LibParentHits_df) #get header from LibParentHits_df
     colnames(RTMaxIntensity_df) <- colnames(LibParentHits_df) #get header from LibParentHits_df
     colnames(MaxIntensity_df) <- colnames(LibParentHits_df) #get header from LibParentHits_df
     colnames(NumOfScans_df) <- colnames(LibParentHits_df) #get header from LibParentHits_df
     colnames(AverageMZ_df) <- colnames(LibParentHits_df) #get header from LibParentHits_df
-    
+
     ConfirmedFragments_df[,c(1,startRTCol:ncolLibParentHits)] <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
     RTMaxIntensity_df[,c(1,startRTCol:ncolLibParentHits)] <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
     MaxIntensity_df[,c(1,startRTCol:ncolLibParentHits)] <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
     NumOfScans_df[,c(1,startRTCol:ncolLibParentHits)] <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
     AverageMZ_df[,c(1,startRTCol:ncolLibParentHits)] <- LibParentHits_df[,c(1,startRTCol:ncolLibParentHits)] #gets data from LibParentHits_df
-    
+
     ########################################################################################
     # loop through lib parent hits M+H column, see                                         #
     #   1) if the precursor(from ms2) falls within this targetAcccuracy mz window          #
@@ -979,7 +979,7 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
     #   ms2_df[[1, 3]][1, 1]                                                               #
     #         ^matrix ^[row, column] from matrix                                           #
     ########################################################################################
-    
+
     #Create a list (1 element for each LibParentHits row) of subsetted ms2_df based on the
     # mz conditional: LibPrecursor - targetedAccuracy < ms2Precursor & ms2Precursor < LibPrecursor + targetedAccuracy
     # RT conditional: LibRTStart < ms2RT & ms2RT < LibRTEnd
@@ -992,12 +992,12 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
       ms2SubsettedMZList[[p]] <- subset(ms2_df, MZConditional)
       RTConditional <- as.numeric(as.character(LibParentHits_df[p,startRTCol])) <= as.numeric(ms2_df[,2]) & as.numeric(ms2_df[,2]) <= as.numeric(as.character(LibParentHits_df[p,endRTCol]))
       ms2SubsettedRTList[[p]] <- subset(ms2_df, RTConditional)
-      
+
       #Combines MZ and RT ms2Subsetted lists
       uniqueMZ <- unique(ms2SubsettedMZList[[p]][,1])
       simplifiedAndSubsettedList[[p]] <- subset(ms2SubsettedRTList[[p]], ms2SubsettedRTList[[p]][,1] %in% uniqueMZ)
     }
-    
+
     ##############################################################
     #Building All_Confirmed data frame for output                #
     # Creates a list of dataframes for each column.              #
@@ -1041,28 +1041,28 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
           }
           subsettedFrag_df <- data.frame(scans, rt, frags, intensity)
           subsettedFragList[[p]] <- subsettedFrag_df
-          
+
           #Stores information into respective dataframes for output as All_Confirmed
           if(nrow(subsettedFragList[[p]])>0){#loop over list elements that have values
             #Max Intensity
             maxIntensity <- max(subsettedFragList[[p]][,4])
             MaxIntensity_df[p, c] <- maxIntensity
-            
+
             #Number of Scans
             numScans <- nrow(subsettedFragList[[p]])
             NumOfScans_df[p, c] <- numScans
-            
+
             #Confirming fragments
             if(sum(subsettedFragList[[p]][,4] > intensityCutOff) > 0 & (numScans >= ScanCutOff)){ #at least one fragment's intensity is above user inputed threshold and number of scans is greater than or equal to user inputed, ScansCutOff
               ConfirmedFragments_df[p, c] <- 1 #1 for yes, 0 for no. (ConfirmedFragments_df was initialized with all 0s)
             }
-            
+
             #RT at max intensity
             maxIntIndex <- which.max(subsettedFragList[[p]][,4])
             RTMaxInt <- subsettedFragList[[p]][maxIntIndex,2]
             RTMaxIntensity_df[p, c] <- RTMaxInt
-            
-            
+
+
             #Average m/z for confirmed fragment
             avgMZ <- mean(subsettedFragList[[p]][,3])
             AverageMZ_df[p, c] <- avgMZ
@@ -1070,12 +1070,12 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
         }
       }
     }
-    
+
     #Creates df for output "AllConfirmed"
     AllConfirmed_df <- data.frame(matrix("", ncol = ncolLibParentHits*5, nrow = nrowLibParentHits))
-    
+
     blankColumn <- rep("", nrowLibParentHits)
-    
+
     AllConfirmed_df <- cbind(blankColumn, ConfirmedFragments_df, blankColumn, RTMaxIntensity_df, blankColumn, NumOfScans_df, blankColumn, MaxIntensity_df, blankColumn, AverageMZ_df, blankColumn, LibParentHits_df)
     colnames(AllConfirmed_df)[1] <- paste("Confirmed fragments if intensity is above", intensityCutOff,"and number of scans is greater than or equal to", ScanCutOff)
     colnames(AllConfirmed_df)[ncolLibParentHits+2] <- "RT at Max Intensity"
@@ -1083,10 +1083,10 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
     colnames(AllConfirmed_df)[ncolLibParentHits*3+4] <- "Max Intensity"
     colnames(AllConfirmed_df)[ncolLibParentHits*4+5] <- "Average m/z"
     colnames(AllConfirmed_df)[ncolLibParentHits*5+6] <- "Theoretical, Library Parent Hits"
-    
+
     ConfirmedAll_dir<-file.path(OutputDirectory,"Additional_Files", paste0(ExtraFileNameInfo,"_All.csv"))
     write.table(AllConfirmed_df, ConfirmedAll_dir, sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-    
+
     ## Code to reduce the dataset to lipids containing necessary fragments
     ## Start with both true, if no inputs then all rows are retained
     AllConfirmed_matrix<-as.matrix(AllConfirmed_df)
@@ -1108,7 +1108,7 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
     }
     ## Reduce the data set to those values which are TRUE for both the OR and AND fragments calculated in the two IF statements above
     DataCombinedConfirmed<-DataCombined[(OR_BinTruth+AND_BinTruth)>1,,drop=FALSE]
-    
+
     NoMatches_dir<-file.path(OutputDirectory,"Additional_Files",paste0(ExtraFileNameInfo,"_NoID.csv"))
     if(nrow(DataCombinedConfirmed)==0){
       write.table("No Confirmed Compounds Found",NoMatches_dir, col.names=FALSE, row.names=FALSE, quote=FALSE)
@@ -1129,7 +1129,7 @@ RunTargeted <- function(ms2_df, FeatureList, LibraryLipid_self, ParentMZcol, Out
 ReadFeatureTable <- function(FeatureTable_dir){
   #Converts Feature Table to an "Feature List" which has only MZ, RT, and Comment columns from the Feature table.
   FeatureTable_df<- read.csv(FeatureTable_dir, sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE, stringsAsFactors=FALSE)
-  
+
   #Conversion: Feature Table -> Feature List
   IncMZCol <- as.numeric(FeatureTable_df[RowStartForFeatureTableData:nrow(FeatureTable_df),MZColumn])
   IncRTCol <- as.numeric(FeatureTable_df[RowStartForFeatureTableData:nrow(FeatureTable_df),RTColumn])
@@ -1164,7 +1164,7 @@ createDataFrame <- function (msx_dir){
     msx_df <- data.frame(precursor=numeric(), rt=numeric(), mz_intensity=I(list()))
   }
   to_remove <- c()
-  
+
   s_indicies <- append(s_indicies, length(msx) + 1)
   length_s_indicies <- length(s_indicies)
   for (i in 1:(length_s_indicies - 1)){
@@ -1193,11 +1193,11 @@ createDataFrame <- function (msx_dir){
     msx_df[i, 2] <- msx[RTime_indicies[i] + 1]
     msx_df[[i, 3]] <- matrix(cbind(mz, intensity), length(mz), 2)
   }
-  
+
   if (length(to_remove) > 0) {
     msx_df <- msx_df[-to_remove,]
   }
-  
+
   return(msx_df)
 }
 
@@ -1218,23 +1218,23 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
   # Class
   # Adduct
   # Notation if only 1 class was observed
-  
+
   PeakTable<-read.csv(PeakTableDirectory,sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE)
   LastCol<-ncol(PeakTable)
   IDcolumn<-LastCol+1
   ddMS2_Files<-list.files(ddMS2directory,pattern="*IDed.csv")
   class_Files<-list.files(Classdirectory,pattern="*IDed.csv")
   AIF_Files<-list.files(AIFdirectory,pattern="*IDed.csv")
-  
+
   ##Debug
   # RunTF <- ddMS2
   # Directory <- ddMS2directory
   # Files <- ddMS2_Files
   # Code <- ddMS2_Code
   # isAIF <- FALSE
-  
+
   #i <- 1
-  
+
   getIDCommentAndIntensities <- function (RunTF,Directory,Files,Code,isAIF){
     Compiled<-data.frame(Lipid=character(), Feature=numeric(), SumOfAllFragmentsIntensities=numeric(), class=character())
     if(RunTF==TRUE & length(Files) > 0){
@@ -1251,13 +1251,13 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
             #MaxIntensityCols <- (which(TempFile[1,]=="Max Intensity")+2):(0)
           }
           maxIntensity_df <- TempFile[2:nrow(TempFile),MaxIntensityCols]
-          
+
           summedIntensity<-c()
           nrow_maxIntensity_df <- nrow(maxIntensity_df)
           for(i in seq_len(nrow_maxIntensity_df)){
             summedIntensity <- append(summedIntensity, sum(unique(as.numeric(as.matrix(maxIntensity_df[i,])))))
           }
-          
+
           class<-rep(as.character(TempFile[1,2]), times=(nrow(TempFile)-1))#Gets class and repeats it
           adduct<-rep(as.character(TempFile[1,3]), times=(nrow(TempFile)-1))#Gets adduct and repeats it
           TempFile <- TempFile[2:nrow(TempFile),c(2, CommentCol)] #remove header and keep ID & Comment column
@@ -1267,7 +1267,7 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
           colnames(TempFile)[3]<-"SumOfAllFragmentsIntensities"
           colnames(TempFile)[4]<-"Class"
           colnames(TempFile)[5]<-"Adduct"
-          
+
           Compiled <- rbind(Compiled, TempFile)
         }
       }
@@ -1276,17 +1276,17 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
     return(Compiled)
   }
   compAIF_df <- getIDCommentAndIntensities(AIF,AIFdirectory,AIF_Files,AIF_Code, TRUE)
-  
+
   #Issue found at 1200 - 10/13/2022
   compddMS2_df <- getIDCommentAndIntensities(ddMS2,ddMS2directory,ddMS2_Files,ddMS2_Code, FALSE)
-  
-  
+
+
   compddMS2class_df <- getIDCommentAndIntensities(ddMS2Class,Classdirectory,class_Files,Class_Code, FALSE)
-  
+
   compiled<-rbind(compddMS2_df, compAIF_df, compddMS2class_df) #join all compiled dataframes together (AIF, class, ddms2)
-  
+
   write.table(compiled, file.path(OutputDirectory, paste0(mode,"_OnlyIDs.csv")), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-  
+
   #Create dataframe to append on the end of your feature table
   NOID<-paste(NoID_Code,"_NoID",sep="")
   appendedIDCol<-matrix(NOID, nrow(PeakTable),1)
@@ -1298,7 +1298,7 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
   appendedAdduct<-matrix("", nrow(PeakTable),1)
   appendedOnlyOneClass<-matrix("", nrow(PeakTable),1)
   NewPeakTable<-cbind(PeakTable,appendedIDCol, appendedIntensityCol, appendedClass, appendedAdduct, appendedOnlyOneClass)
-  
+
   #Handy function to convert factor to character so you can manipulate the data in cells
   factorToCharacter <- function(df){
     for(i in which(sapply(df, class) == "factor")) df[[i]] = as.character(df[[i]])
@@ -1306,7 +1306,7 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
   }
   NewPeakTable[,IDcolumn:(IDcolumn+4)] <- factorToCharacter(as.data.frame(NewPeakTable[,IDcolumn:(IDcolumn+4)]))#factor to character on the last 5 columns
   NewPeakTable[1,IDcolumn:(IDcolumn+4)] <- c("ID_Ranked","Intensity_Ranked","Class_At_Max_Intensity","Adduct_At_Max_Intensity","Only_One_Class")#create header for the last 5 columns
-  
+
   nrow_NewPeakTable <- nrow(NewPeakTable)
   for (i in RowStartForFeatureTableData:nrow_NewPeakTable) {
     TempCompiled <- compiled[(as.numeric(as.character(compiled[,2]))==as.numeric(as.character(NewPeakTable[i,CommentColumn]))),]
@@ -1318,10 +1318,10 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
       NewPeakTable[i,IDcolumn+4] <- "Yes" #only one class. yes.
     }else if(nrow(TempCompiled)>1) {
       TempCompiled <- TempCompiled[with(TempCompiled, order(-SumOfAllFragmentsIntensities)), ]#sort intensities, max first
-      
+
       rowsToKeep <- match(unique(TempCompiled[,1]),TempCompiled[,1]) #removes duplicates and keeps highest intensity
       TempCompiled <- TempCompiled[rowsToKeep,] #removes duplicates
-      
+
       NewPeakTable[i,IDcolumn]   <- paste0(TempCompiled[,1], collapse=" | ")
       NewPeakTable[i,IDcolumn+1] <- paste0(TempCompiled[,3], collapse=" | ") #intensity
       NewPeakTable[i,IDcolumn+2] <- paste0(TempCompiled[1,4], collapse=" | ") #get's class at max intensity
@@ -1329,7 +1329,7 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
       NewPeakTable[i,IDcolumn+4] <- ifelse(length(unique(TempCompiled[,4]))==1, "Yes", "No") #Only one class?: yes, else? no.
     }
   }
-  
+
   Lib <- read.csv(ImportLib, sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE)
   Lib <- as.matrix(Lib)
   #Exact mass matching for Precursor library to feature table m/zs
@@ -1347,7 +1347,7 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
       NewPeakTable[i,IDcolumn]<- paste0(paste(ExactMass_Code,"_",TempID, sep=""),collapse=" | ")
     }
   }
-  
+
   #Sorting based on confirmation numbers
   dataRange <- RowStartForFeatureTableData:nrow(NewPeakTable) #defining a constant
   TempSorted <- NewPeakTable[dataRange,]
@@ -1357,10 +1357,10 @@ CreateIDs <- function(PeakTableDirectory, ddMS2directory, Classdirectory, AIFdir
   TempSorted <- TempSorted[order(ConfirmationNum, IDSubstr),]  #sort NewPeakTable based on Confirmation numbers
   TempSorted <- TempSorted[,-ncol(TempSorted)]
   NewPeakTable[dataRange,] <- TempSorted
-  
-  
+
+
   write.table(NewPeakTable, file.path(OutputDirectory, paste0(mode,"IDed.csv")), sep=",",col.names=FALSE, row.names=FALSE, quote=TRUE, na="NA")
-  
+
   # Export MS/MS scans with assignments into a csv format
   # ID_Ranked_col <- ncol(IDedTable) - 4
   # for (i in RowStartForFeatureTableData:nrow(NewPeakTable)) {
@@ -1403,12 +1403,12 @@ AppendFrag <- function (CommentColumn, RowStartForFeatureTableData, InputDirecto
   #empty row is included, if a matrix is one dimension it will be converted to a vector
   FragsFilled<-matrix(c("Tentative_IDs", "Fragments", "Comment", "file", "#Fragments"),1,5)
   # timestamp()
-  
-  
+
+
   # start <- 1
   # end <- L
   # All_Info_Files[1:L]
-  
+
   for_loop <- function(start, end, All_Info_Files) {
     # FragsFilled1<-matrix(c("Tentative_IDs",0,"Fragments",0,"Comment",0,"file",0,"#Fragments",0),2,5)
     FragsFilled1<-matrix("", 0, 5)
@@ -1453,8 +1453,8 @@ AppendFrag <- function (CommentColumn, RowStartForFeatureTableData, InputDirecto
     # FragsFilled <- append(FragsFilled, FragsFilled1)
     return(FragsFilled1)
   }
-  
-  
+
+
   if (ParallelComputing == TRUE) {
     #a <- foreach (i = 1:L, .combine = rbind) %dopar% {
     #for_loop(i, i, All_Info_Files[i:i])
@@ -1465,7 +1465,7 @@ AppendFrag <- function (CommentColumn, RowStartForFeatureTableData, InputDirecto
     a <- for_loop(1, L, All_Info_Files[1:L])
     FragsFilled <- rbind(FragsFilled, a)
   }
-  
+
   #Header
   Header_Frags<-FragsFilled[1,]
   #Remove empty row
@@ -1494,7 +1494,7 @@ AppendFrag <- function (CommentColumn, RowStartForFeatureTableData, InputDirecto
   FragsSortAggregate<-aggregate(FragsFilledSorted, by=list(FragsFilledSorted[,3]),function(x) paste(x,sep="|"))
   #Import NegIDed to append new columns
   NegIDed <- read.csv(file.path(InputDirectory,ImportTable), header=FALSE)
-  
+
   #appending to table
   #Add 4 extra columns to be filled with 1) Tentative_IDs	2) Fragments	3) number of fragments 4) Files
   NewCols<-matrix(NA,nrow(NegIDed),4)
@@ -1554,26 +1554,26 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
   data<-data[which(not_MSMS),]
   # Calculate median peak area or peak height
   peak_cols<-which(grepl("Peak.area|Peak.height",colnames(data)))
-  
+
   if (length(peak_cols)>1) {
     m <- as.matrix(apply(data[,peak_cols], 2, as.numeric))
     median_intensities<-apply(m,1,median, na.rm = TRUE)
   }
-  
+
   # A specific case where there is only one sample
   if (length(peak_cols)==1){
     median_intensities<-as.numeric(data[,peak_cols])
   }
-  
+
   # Take top ranked lipid for each row
   top_ranked_lipid<-sapply(as.vector(data[,annotation_col]), function(x){
     strsplit(x,split = " | ")[[1]][1]
   })
   top_ranked_lipid<-as.vector(top_ranked_lipid)
-  
+
   # Remove first 2 digits from lipid names
   top_ranked_lipid<-substring(top_ranked_lipid,3)
-  
+
   # Remove adducts from names
   top_ranked_lipid<-gsub("\\+.*| .*|\\-H.*|\\-2H.*","",top_ranked_lipid)
   # top_ranked_lipid <- top_ranked_lipid[-1]
@@ -1592,7 +1592,7 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
       }
     }
   })
-  
+
   # Identify row # of most abundant duplicate for each group. Make a string of adducts within the window.
   keepers<-c()
   adducts<-c()
@@ -1605,7 +1605,7 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
     }else{
       candidates<-median_intensities[rows]
       ranks<-order(candidates, decreasing = TRUE)
-      
+
       # Prefer negative adducts if they're there
       all_adducts<-as.vector(data[,adduct_col])[rows]
       ### EDITED JPK (added new adducts for negative mode)
@@ -1619,23 +1619,23 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
         best_abundance<-max(candidates)
         best_index<-intersect(which(median_intensities==best_abundance),rows)[1]
       }
-      
+
       # Use the runner-up if the top ranked adduct is sodium
       if(not_sodiated[best_index]==FALSE){
         best_index<-intersect(which(median_intensities==candidates[match(2,ranks)]),rows)[1]
       }
       # Find rows within RT window
       rows<-rows[ranks]
-      
+
       in_window<-intersect(which(as.numeric(as.vector(data[,RT_col])[rows]) <= as.numeric(as.vector(data[,RT_col])[best_index]) + window/2),
                            which(as.numeric(as.vector(data[,RT_col])[rows]) >= as.numeric(as.vector(data[,RT_col])[best_index]) - window/2))
-      
+
       in_window_candidates<-candidates[in_window]
-      
+
       # Get adducts within that window
       adduct_indices<-rows[in_window]
       adduct_names<-unique(as.vector(data[,adduct_col])[adduct_indices])
-      
+
       # Move negative adducts to the front of the list and sort by intensity
       if(grepl("+", paste(all_adducts,sep = "",collapse = "|")) && ("[M-H]-" %in% adduct_names || "[M-2H]-" %in% adduct_names || "[M+C2H3O2]-" %in% all_adducts || "[M+HCO2]-" %in% all_adducts || "[M+Cl]-" %in% all_adducts)){
         negative_adduct_indices<-c(match("[M-H]-",adduct_names),match("[M-2H]-",adduct_names),match("[M+C2H3O2]-",adduct_names),match("[M+HCO2]-",adduct_names),match("[M+Cl]-",adduct_names))
@@ -1645,7 +1645,7 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
       }
       adducts<-c(adducts,paste(adduct_names,sep = "",collapse = " || "))
       keepers<-c(keepers,best_index)
-      
+
       ### EDITED PJS
       ncol_data <- ncol(data)
       rows <- adduct_indices[which(adduct_indices != best_index)]
@@ -1661,14 +1661,14 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
       data[best_index,  ncol_data] <- paste(data[best_index,  ncol_data], paste(data[rows, ncol_data],sep = "",collapse = " || "), sep = " || ")
     }
   }
-  
+
   # Return a frame with no duplicates
   data<-data.frame(data[keepers,],top_ranked_lipid[keepers],adducts)
   data<-data[which(as.vector(data[,ncol(data)])!="[M+Na]+"),]
   colnames(data)[ncol(data)-1] = "Molecular"
   colnames(data)[ncol(data)] = "Adducts Confirmed by MS/MS"
   directory <- "C:/Users/pstel/Documents/PFAS Lab/remove_duplicates_debugging"
-  # write.table(data, file.path(directory, "CombinedIDed_Fragments.csv"), sep=",",col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")  
+  # write.table(data, file.path(directory, "CombinedIDed_Fragments.csv"), sep=",",col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
   return(data)
 }
 
@@ -1690,29 +1690,29 @@ remove_duplicates<-function(data,row_start,adduct_col,annotation_col,window,RT_c
 # 1) directory after EPA masterlist predicted annotation, 2) output directory
 # 3) m/z, 4) RT, 5) the confident annotation column, 6) one or more frag column, 7) same for predicted from EPA master, 8) whether or not RT order should be accounted for
 Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartForFeatureTableData, RT_flagging, KMD_Bin_Window, upper, lower, RepeatingUnits_dir){
-  
+
   #Import IDedTable
   IDedTable <- read.csv(IDedTable_dir,sep=",")
   IDedTable <- as.matrix(IDedTable)
-  
+
   if (nrow(IDedTable) == 0) {
     message("No MSMS data, stopping scoring function")
     stop()
   }
-  
+
   #Import RepeatingUnits
   RepeatingUnits <- read.csv(RepeatingUnits_dir,sep=",")
   RepeatingUnits <- as.matrix(RepeatingUnits)
   Names <- rev(RepeatingUnits[which(RepeatingUnits[,3] == TRUE | RepeatingUnits[,3] == "TRUE" | RepeatingUnits[,3] == " TRUE"),1])
   Series <- rev(RepeatingUnits[which(RepeatingUnits[,3] == TRUE | RepeatingUnits[,3] == "TRUE" | RepeatingUnits[,3] == " TRUE"),2])
-  
+
   # FOR DEBUGGING
   # IDedTable <- IDedTable[1:3000,]
-  
+
   ID_Ranked_col <- which(colnames(IDedTable) == "ID_Ranked")
   Potential_IDs_col <- which(colnames(IDedTable) == "Potential_IDs")
   Frags_col <- ncol(IDedTable)-2
-  
+
   # add columns and calculate mass defect and Kendrick mass defect for Mass_col
   m <- matrix(0, nrow(IDedTable), 2)
   IDedTable <- cbind(IDedTable, m)
@@ -1727,9 +1727,9 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
   IDedTable[RowStartForFeatureTableData:nrow_IDedTable, ncol_IDedTable] <- as.numeric(massd)
   md_col <- ncol_IDedTable
   hseries_count_cols <- c()
-  
+
   # timestamp()
-  
+
   length_Series <- length(Series)
   for(x in 1:length_Series){
     # print(x)
@@ -1746,14 +1746,14 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     colnames(IDedTable)[ncol_IDedTable - 2] <- paste(Names[x], "Kendrick_mass_defect", sep="_")
     colnames(IDedTable)[ncol_IDedTable - 1] <- paste(Names[x], "KMD_Group", sep="_")
     colnames(IDedTable)[ncol_IDedTable] <- paste(Names[x], "homologous_series", sep="_")
-    
+
     KM <- Mass_vec * (Mass/exactMass)
     IDedTable[RowStartForFeatureTableData:nrow_IDedTable, ncol_IDedTable - 4] <- as.numeric(KM)
     nKM <- round(KM)
     IDedTable[RowStartForFeatureTableData:nrow_IDedTable, ncol_IDedTable - 3] <- as.numeric(nKM)
     KMD <- KM - nKM
     IDedTable[RowStartForFeatureTableData:nrow_IDedTable, ncol_IDedTable - 2] <- as.numeric(KMD)
-    
+
     # Sort and group by KMD
     tmptable <- IDedTable[RowStartForFeatureTableData:nrow_IDedTable,]
     tmptable <- tmptable[order(as.numeric(tmptable[, ncol_IDedTable - 2])),]
@@ -1772,7 +1772,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     if (start != nrow_IDedTable) {
       IDedTable[start:nrow_IDedTable, KMD_col + 1] <- group
     }
-    
+
     # Calculate homologous series
     series <- 1
     for (i in RowStartForFeatureTableData:(nrow_IDedTable - 1)) {
@@ -1791,10 +1791,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       }
     }
     IDedTable[which(is.na(IDedTable[, KMD_col + 2])), KMD_col + 2] <- 0
-    
+
     # Sort by homologous series
     # IDedTable <- IDedTable[order(as.numeric(IDedTable[, ncol_IDedTable])),]
-    
+
     m <- matrix(0, nrow(IDedTable), 2)
     IDedTable <- cbind(IDedTable, m)
     # Phantom columns
@@ -1802,17 +1802,17 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     colnames(IDedTable)[ncol_IDedTable - 9] <- paste(Names[x], "Homologous_series_count", sep="_")
     colnames(IDedTable)[ncol_IDedTable - 8] <- paste(Names[x], "MD_Filter", sep="_")
     hseries_count_cols <- append(hseries_count_cols, ncol_IDedTable - 9)
-    
+
     # Mass defect filtering
     IDedTable[, ncol_IDedTable - 8] <- (as.numeric(IDedTable[, md_col]) >= lower & as.numeric(IDedTable[, md_col]) <= upper)
-    
+
     # Pre-flagging sorting
     tmptable <- IDedTable[RowStartForFeatureTableData:nrow_IDedTable,]
     tmptable <- tmptable[order(as.numeric(tmptable[, ncol_IDedTable - 10]), as.numeric(tmptable[, ncol_IDedTable - 11]), as.numeric(tmptable[, ncol_IDedTable - 13]), as.numeric(tmptable[, Retention_col])),]
     IDedTable[RowStartForFeatureTableData:nrow_IDedTable,] <- tmptable
-    
+
     # write.table(IDedTable, paste("C:/Users/pstel/Documents/PFAS Lab/Agilent/SMILES2MSMS/", "IDedTableIDed_FIN_KMD_scored_final_output_practice0.csv",sep=""), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-    
+
     # RT Flagging
     # which() function?
     m <- matrix(0, nrow(IDedTable), 2)
@@ -1846,7 +1846,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         }
       }
     }
-    
+
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       if (IDedTable[i, ncol_IDedTable - 6] == FALSE || IDedTable[i, ncol_IDedTable - 5] == FALSE) {
         IDedTable[i, ncol_IDedTable - 6] <- "RT not ordered"
@@ -1856,14 +1856,14 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, ncol_IDedTable - 6] <- "NA"
       }
     }
-    
+
     IDedTable <- IDedTable[, 1:(ncol_IDedTable - 6)]
-    
+
     ncol_IDedTable <- ncol_IDedTable + 1
-    
+
     ## For debugging
     # write.table(IDedTable, file.path(OutDir, "NegIDed_test_optimized.csv"), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-    
+
     if (RT_flagging == TRUE) {
       # Homologous seris count
       series <- as.numeric(unique(IDedTable[RowStartForFeatureTableData:nrow_IDedTable, ncol_IDedTable - 10]))
@@ -1903,14 +1903,14 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[curr, ncol_IDedTable - 9] <- length(svec)
       }
     }
-    
+
     # write.table(IDedTable, paste("C:/Users/pstel/Documents/PFAS Lab/Agilent/SMILES2MSMS/", "IDedTableIDed_FIN_KMD_scored_final_output_practice1.csv",sep=""), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
   }
-  
+
   # timestamp()
-  
+
   # write.table(IDedTable, file.path(OutDir, "Test.csv"), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-  
+
   if (Lipid == FALSE) {
     m <- matrix(0, nrow(IDedTable), 8)
     IDedTable <- cbind(IDedTable, m)
@@ -1923,7 +1923,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     colnames(IDedTable)[ncol_IDedTable - 2] <- "Exact_mass_match"
     colnames(IDedTable)[ncol_IDedTable - 1] <- "Score"
     colnames(IDedTable)[ncol_IDedTable] <- "Score_Description"
-    
+
     # Scoring system
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       if (substr(IDedTable[i, ID_Ranked_col], 1, 2) == "1_" || substr(IDedTable[i, ID_Ranked_col], 1, 2) == "2_") {
@@ -1966,9 +1966,9 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, ncol_IDedTable - 2] <- FALSE
       }
     }
-    
+
     # timestamp()
-    
+
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       if (IDedTable[i, ncol_IDedTable - 7] == "TRUE" && IDedTable[i, ncol_IDedTable - 6] == "TRUE") {
         IDedTable[i, ncol_IDedTable - 1] <- "A"
@@ -1999,12 +1999,12 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, ncol_IDedTable] <- "Lvl 5 Schymanski: likely not PFAS"
       }
     }
-    
+
     # timestamp()
-    
+
     # for (i in RowStartForFeatureTableData:nrow_IDedTable) {
     if (ParallelComputing == TRUE) {
-      
+
       IDedTable <- foreach (i = RowStartForFeatureTableData:nrow_IDedTable, .combine = rbind) %dopar% {
         #print(i)
         if (IDedTable[i, ncol_IDedTable - 1] == "D+" || IDedTable[i, ncol_IDedTable - 1] == "D" || IDedTable[i, ncol_IDedTable - 1] == "D-") {
@@ -2058,9 +2058,9 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         }
       }
     }
-    
+
     # timestamp()
-    
+
     # Change Ds to D+s when in series with D+s
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       #print(i)
@@ -2077,11 +2077,11 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         }
       }
     }
-    
+
     # timestamp()
-    
+
     # write.table(IDedTable, paste("C:/Users/pstel/Documents/PFAS Lab/Agilent/SMILES2MSMS/", "IDedTableIDed_FIN_KMD_scored_final.csv",sep=""), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
-    
+
     # Next seven lines for debugging
     # rm(list = ls())
     # IDedTable_dir <- "C:/Users/pstel/Documents/PFAS Lab/Agilent/SMILES2MSMS/IDedTableIDed_FIN_KMD_scored_final.csv"
@@ -2090,22 +2090,22 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     # Retention_col <- 3
     # nrow_IDedTable <- nrow(IDedTable)
     # ncol_IDedTable <- ncol(IDedTable)
-    
+
     # Remove tentative and F containing columns
     IDedTable <- IDedTable[, -((ncol_IDedTable - 4):(ncol_IDedTable - 3))]
     ncol_IDedTable <- ncol(IDedTable)
-    
+
     ######### Sorting
-    
+
     m <- matrix(0, nrow(IDedTable), 4)
     IDedTable <- cbind(IDedTable, m)
     ncol_IDedTable <- ncol(IDedTable) - 4
-    
+
     # Find max series for each row
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       IDedTable[i, ncol_IDedTable + 2] <- max(which(IDedTable[i, hseries_count_cols] == max(IDedTable[i, hseries_count_cols])))
     }
-    
+
     # Max series series number and count
     m <- matrix(0, nrow_IDedTable, 1)
     IDedTable <- cbind(IDedTable, m)
@@ -2113,10 +2113,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       IDedTable[i, ncol_IDedTable + 3] <- as.numeric(IDedTable[i, hseries_count_cols[as.numeric(IDedTable[i, ncol_IDedTable + 2])] - 1])
       IDedTable[i, ncol_IDedTable + 4] <- as.numeric(IDedTable[i, hseries_count_cols[as.numeric(IDedTable[i, ncol_IDedTable + 2])]])
     }
-    
+
     # Sort by max series count, max series, and series number
     IDedTable <- IDedTable[order(-as.numeric(IDedTable[, ncol_IDedTable + 4]), -as.numeric(IDedTable[, ncol_IDedTable + 2]), as.numeric(IDedTable[, ncol_IDedTable + 3])),]
-    
+
     # Create rank
     rank <- 1
     IDedTable[RowStartForFeatureTableData, ncol_IDedTable + 5] <- rank
@@ -2128,7 +2128,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       }
       IDedTable[i, ncol_IDedTable + 5] <- rank
     }
-    
+
     # Score
     for (i in RowStartForFeatureTableData:nrow(IDedTable)) {
       if (IDedTable[i, ncol_IDedTable - 1] == "A" || IDedTable[i, ncol_IDedTable - 1] == "A-") {
@@ -2141,10 +2141,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, ncol_IDedTable + 1] <- 3
       }
     }
-    
+
     # Sort by rank and score
     IDedTable <- IDedTable[order(as.numeric(IDedTable[, ncol_IDedTable + 5]), as.numeric(IDedTable[, ncol_IDedTable + 1])),]
-    
+
     # Adjust rank
     old <- IDedTable[RowStartForFeatureTableData, ncol_IDedTable + 5]
     if (IDedTable[RowStartForFeatureTableData, ncol_IDedTable + 1] == 1) {
@@ -2170,10 +2170,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, ncol_IDedTable + 5] <- as.numeric(IDedTable[i - 1, ncol_IDedTable + 5])
       }
     }
-    
+
     # Sort by rank and m/z
     IDedTable <- IDedTable[order(as.numeric(IDedTable[, ncol_IDedTable + 5]), as.numeric(IDedTable[, Mass_col])),]
-    
+
     ## Is this right? I think so.
     # Final aesthetics
     ncol_IDedTable <- ncol_IDedTable - 1
@@ -2183,7 +2183,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       }
     }
   }
-  
+
   # New formatting
   m <- matrix("", nrow_IDedTable, 5)
   n <- matrix("", nrow_IDedTable, 4)
@@ -2199,18 +2199,18 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
   colnames(IDedTable)[9] <- "Unique"
   colnames(IDedTable)[10] <- "Score_Description"
   colnames(IDedTable)[11] <- "Needs_Validation"
-  
+
   ncol_IDedTable <- ncol(IDedTable)
   ID_Ranked_col <- 9 + ID_Ranked_col
   Potential_IDs_col <- 9 + Potential_IDs_col
   Frags_col <- 9 + Frags_col
-  
-  
+
+
   if (Lipid == FALSE && TWeen_pos == FALSE) {
     IDedTable[, 1] <- IDedTable[, ncol_IDedTable - 6]
     IDedTable[, 2] <- paste(Names[as.numeric(IDedTable[, ncol_IDedTable - 3])], IDedTable[, ncol_IDedTable - 2], sep="_") ## Error??
     IDedTable[, 10] <- IDedTable[, ncol_IDedTable - 5]
-    
+
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       if (IDedTable[i, 1] == "A" || IDedTable[i, 1] == "A-") {
         primary <- strsplit(strsplit(IDedTable[i, ID_Ranked_col], " | ", TRUE)[[1]][1], ";", TRUE)[[1]]
@@ -2296,7 +2296,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     IDedTable[, 1] <- IDedTable[, ncol_IDedTable - 6]
     IDedTable[, 2] <- paste(Names[as.numeric(IDedTable[, ncol_IDedTable - 3])], IDedTable[, ncol_IDedTable - 2], sep="_") ## Error??
     IDedTable[, 10] <- IDedTable[, ncol_IDedTable - 5]
-    
+
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       # Slight name modification
       if (IDedTable[i, 1] == "A" || IDedTable[i, 1] == "A-") {
@@ -2353,7 +2353,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable[i, 4] <- "NA"
         IDedTable[i, 5] <- "NA"
         IDedTable[i, 8] <- "[M+?]+"
-        
+
         u_entries <- unique(primary)
         if (length(u_entries) == 1) {
           IDedTable[i, 9] <- "Yes"
@@ -2374,34 +2374,34 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     IDedTable[, 3] <- IDedTable[, ID_Ranked_col + 2]
     IDedTable[, 4] <- "CH2"
     IDedTable[, 5] <- "CC"
-    
+
     IDedTable[, 8] <- IDedTable[, ID_Ranked_col + 3]
     IDedTable[which(is.na(IDedTable[, 8])), 8] <- 0
-    
+
     IDedTable[, 9] <- IDedTable[, ID_Ranked_col + 4]
     IDedTable[which(is.na(IDedTable[, 9])), 9] <- "No"
-    
+
     IDedTable[which(IDedTable[, 1] == 1), 10] <- "Annotated using class based rules from standards including by fatty acyl chain constituents with ~5% false positive rate at the level of class and C:DB"
     IDedTable[which(IDedTable[, 1] == 2), 10] <- "Annotated using class based rules from standards and DIA data with ~5% false positive rate at the level of class and C:DB"
     IDedTable[which(IDedTable[, 1] == 3), 10] <- "Annotated using class based rules from standards and DDA data but only annotated by class (fatty acid composition not known)"
     IDedTable[which(IDedTable[, 1] == 4), 10] <- "accurate mass match to database with very high false positive rate (>> 80%) so only use as a starting point for compound identification"
     IDedTable[which(IDedTable[, 1] == 5), 10] <- "no match"
-    
+
     IDedTable[, 11] <- "Yes"
   }
-  
+
   # timestamp()
-  
+
   IDedTable <- IDedTable[, 1:(ncol_IDedTable - 5)]
-  
+
   # Remove whitespace
   IDedTable[IDedTable == ""] <- NA
-  
+
   # Remove "Na" from formulas in column 4
   IDedTable[, 4] <- gsub("Na", "", IDedTable[, 4])
-  
+
   ####################################################################################
-  
+
   if (Lipid == FALSE) {
     # Create a second output file with more info on B scores
     IDedTable_B <- IDedTable
@@ -2414,7 +2414,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
     colnames(IDedTable_B)[ncol_IDedTable_B - 2] <- "Formula"
     colnames(IDedTable_B)[ncol_IDedTable_B - 1] <- "MD"
     colnames(IDedTable_B)[ncol_IDedTable_B] <- "Likely_PFAS"
-    
+
     for (i in RowStartForFeatureTableData:nrow_IDedTable) {
       count <- 0
       frags_to_check <- c("C2F5", "C3F7", "SO2F", "SO3F", "CO2F", "C2F5O", "CF3O", "C2F3O2", "C3F7O", "C3O2F7", "CF3", "CH3FNSO2", "PO2F", "PO2F2", "SF5")
@@ -2442,7 +2442,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       } else {
         IDedTable_B[i, ncol_IDedTable_B] <- FALSE
       }
-      
+
       # Assign B--
       if (IDedTable_B[i, ncol_IDedTable_B] == FALSE && (IDedTable_B[i, 1] == "B+" || IDedTable_B[i, 1] == "B" || IDedTable_B[i, 1] == "B-")) {
         IDedTable_B[i, 1] <- "B--"
@@ -2450,7 +2450,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable_B[i, 10] <- "Lvl 5 Schymanski: Tentative ID, possible PFAS (1+ PFAS fragment (F containing) and exact mass). Note the fragment(s) observed may have other fragment formula assignments not containing F. Can be assigned a Lvl 3/2 after manual review of fragment evidence provided, homologous series evidence provided, EIC, and spectra"
         IDedTable_B[i, ncol_IDedTable_B - 5] <- "Lvl 5 Schymanski: Tentative ID, possible PFAS (1+ PFAS fragment (F containing) and exact mass). Note the fragment(s) observed may have other fragment formula assignments not containing F. Can be assigned a Lvl 3/2 after manual review of fragment evidence provided, homologous series evidence provided, EIC, and spectra"
       }
-      
+
       # Correct B score descriptions that have SMILES
       if (IDedTable_B[i, 1] == "B+" && !is.na(IDedTable_B[i, 5])) {
         IDedTable_B[i, 10] <- "Lvl 3 Schymanski: Tentative ID, highly likely PFAS (1+ PFAS fragments from standards and exact mass) and 2+ in homologous series. Can be assigned a Lvl 2 after manual review of fragment evidence provided, homologous series evidence provided, EIC, and spectra"
@@ -2465,22 +2465,22 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable_B[i, 10] <- "Lvl 3 Schymanski: Tentative ID, possible PFAS (1+ PFAS fragment (F containing) and exact mass). Note the fragment(s) observed may have other fragment formula assignments not containing F. Can be assigned a Lvl 2 after manual review of fragment evidence provided, homologous series evidence provided, EIC, and spectra"
         IDedTable_B[i, ncol_IDedTable_B - 5] <- "Lvl 3 Schymanski: Tentative ID, possible PFAS (1+ PFAS fragment (F containing) and exact mass). Note the fragment(s) observed may have other fragment formula assignments not containing F. Can be assigned a Lvl 2 after manual review of fragment evidence provided, homologous series evidence provided, EIC, and spectra"
       }
-      
+
     }
-    
+
     ###################### Final Sorting ###########################
-    
+
     m <- matrix(0, nrow(IDedTable_B), 4)
     IDedTable_B <- cbind(IDedTable_B, m)
     ncol_IDedTable_B <- ncol(IDedTable_B) - 4
     hseries_count_cols <- hseries_count_cols + 9
     Mass_col <- Mass_col + 4
-    
+
     # Find max series for each row
     for (i in RowStartForFeatureTableData:nrow_IDedTable_B) {
       IDedTable_B[i, ncol_IDedTable_B + 2] <- max(which(IDedTable_B[i, hseries_count_cols] == max(IDedTable_B[i, hseries_count_cols])))
     }
-    
+
     # Max series series number and count
     m <- matrix(0, nrow_IDedTable_B, 1)
     IDedTable_B <- cbind(IDedTable_B, m)
@@ -2488,10 +2488,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       IDedTable_B[i, ncol_IDedTable_B + 3] <- as.numeric(IDedTable_B[i, hseries_count_cols[as.numeric(IDedTable_B[i, ncol_IDedTable_B + 2])] - 1])
       IDedTable_B[i, ncol_IDedTable_B + 4] <- as.numeric(IDedTable_B[i, hseries_count_cols[as.numeric(IDedTable_B[i, ncol_IDedTable_B + 2])]])
     }
-    
+
     # Sort by max series count, max series, and series number
     IDedTable_B <- IDedTable_B[order(-as.numeric(IDedTable_B[, ncol_IDedTable_B + 4]), -as.numeric(IDedTable_B[, ncol_IDedTable_B + 2]), as.numeric(IDedTable_B[, ncol_IDedTable_B + 3])),]
-    
+
     # Create rank
     rank <- 1
     IDedTable_B[RowStartForFeatureTableData, ncol_IDedTable_B + 5] <- rank
@@ -2503,7 +2503,7 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       }
       IDedTable_B[i, ncol_IDedTable_B + 5] <- rank
     }
-    
+
     # Score
     for (i in RowStartForFeatureTableData:nrow(IDedTable_B)) {
       if (IDedTable_B[i, ncol_IDedTable_B - 6] == "A" || IDedTable_B[i, ncol_IDedTable_B - 6] == "A-") {
@@ -2518,10 +2518,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable_B[i, ncol_IDedTable_B + 1] <- 4
       }
     }
-    
+
     # Sort by rank and score
     IDedTable_B <- IDedTable_B[order(as.numeric(IDedTable_B[, ncol_IDedTable_B + 5]), as.numeric(IDedTable_B[, ncol_IDedTable_B + 1])),]
-    
+
     # Adjust rank
     old <- IDedTable_B[RowStartForFeatureTableData, ncol_IDedTable_B + 5]
     if (IDedTable_B[RowStartForFeatureTableData, ncol_IDedTable_B + 1] == 1) {
@@ -2551,10 +2551,10 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
         IDedTable_B[i, ncol_IDedTable_B + 5] <- as.numeric(IDedTable_B[i - 1, ncol_IDedTable_B + 5])
       }
     }
-    
+
     # Sort by rank and m/z
     IDedTable_B <- IDedTable_B[order(as.numeric(IDedTable_B[, ncol_IDedTable_B + 5]), as.numeric(IDedTable_B[, Mass_col])),]
-    
+
     IDedTable_B <- IDedTable_B[, 1:ncol_IDedTable_B]
   } else if (Lipid == TRUE) {
     m <- matrix(0, nrow(IDedTable), 1)
@@ -2567,14 +2567,14 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
       IDedTable[, ncol_IDedTable] <- substr(IDedTable[, Num_Frags_col], 1, 1)
     }
   }
-  
+
   # # Add convenient columns
   # m <- matrix("", nrow(IDedTable_B), 5)
   # IDedTable_B <- cbind(IDedTable_B, m)
   # ncol_IDedTable_B <- ncol(IDedTable_B)
   # colnames(IDedTable_B)[(ncol_IDedTable_B - 4):ncol_IDedTable_B] <- c("Checked_Viz", "TRUE_Viz", "Class_Viz", "Cnumb_Viz", "Comment_Viz")
-  # 
-  # 
+  #
+  #
   # if (NegPos == "Neg") {
   #   # write.table(IDedTable, file.path(OutDir, "NegIDed_FIN_KMD_scored.csv"), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
   #   write.table(IDedTable_B, file.path(OutDir, "NegIDed_FIN.csv"), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
@@ -2584,19 +2584,19 @@ Scoring <- function (IDedTable_dir, OutDir, Mass_col, Retention_col, RowStartFor
   # } else if (NegPos == "Combined") {
   #   write.table(IDedTable_B, file.path(OutDir, "CombinedIDed_FIN.csv"), sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA")
   # }
-  
+
   # Add convenient columns
   m <- matrix("", nrow(IDedTable), 5)
   IDedTable <- cbind(IDedTable, m)
   ncol_IDedTable <- ncol(IDedTable)
   colnames(IDedTable)[(ncol_IDedTable - 4):ncol_IDedTable] <- c("Checked_Viz", "TRUE_Viz", "Class_Viz", "Cnumb_Viz", "Comment_Viz")
-  
-  
+
+
   OutDir_parts <- strsplit(IDedTable_dir, split = "_")[[1]]
   OutDir_parts <- paste(OutDir_parts[-length(OutDir_parts)], collapse = "_")
   OutDir_full <- paste0(OutDir_parts, "_FIN.csv")
   write.table(IDedTable, OutDir_full, sep=",", col.names=TRUE, row.names=FALSE, quote=TRUE, na="NA", qmethod="double")
-  
+
 }
 
 ####################################End functions##########################################
@@ -2621,14 +2621,14 @@ for(i in seq_len(lengthFoldersToRun)){
     fpath <- file.path(InputDirectory, foldersToRun[i])
   }
   fileName <- basename(fpath)
-  
+
   ddMS2NEG_in <- list.files(path=fpath, pattern="[nNgG]\\.ms2", ignore.case=FALSE)
   AIFMS1NEG_in <- list.files(path=fpath, pattern="[nNgG]\\.ms1", ignore.case=FALSE)
   AIFMS2NEG_in <- list.files(path=fpath, pattern="[nNgG]\\.ms2", ignore.case=FALSE)
   ddMS2POS_in <- list.files(path=fpath, pattern="[pPsS]\\.ms2", ignore.case=FALSE)
   AIFMS1POS_in <- list.files(path=fpath, pattern="[pPsS]\\.ms1", ignore.case=FALSE)
   AIFMS2POS_in <- list.files(path=fpath, pattern="[pPsS]\\.ms2", ignore.case=FALSE)
-  
+
   #separate ddMS and AIF
   ddMS2NEG_in <- ddMS2NEG_in[grep("[dD][dD]", ddMS2NEG_in)]
   AIFMS1NEG_in <- AIFMS1NEG_in[grep("[Aa][Ii][Ff]", AIFMS1NEG_in)] #Yang 20180315. Orig: AIFMS1NEG_in <- AIFMS1NEG_in[grep("[AIFaif][AIFaif][AIFaif]", AIFMS1NEG_in)]
@@ -2636,7 +2636,7 @@ for(i in seq_len(lengthFoldersToRun)){
   ddMS2POS_in <- ddMS2POS_in[grep("[dD][dD]", ddMS2POS_in)]
   AIFMS1POS_in <- AIFMS1POS_in[grep("[Aa][Ii][Ff]", AIFMS1POS_in)] #Yang 20180315. Orig: AIFMS1POS_in <- AIFMS1POS_in[grep("[AIFaif][AIFaif][AIFaif]", AIFMS1POS_in)]
   AIFMS2POS_in <- AIFMS2POS_in[grep("[Aa][Ii][Ff]", AIFMS2POS_in)] #Yang 20180315. Orig: AIFMS2POS_in <- AIFMS2POS_in[grep("[AIFaif][AIFaif][AIFaif]", AIFMS2POS_in)]
-  
+
   #user info outputted for error handling
   if(length(ddMS2POS_in) == 0){
     print(paste("CAUTION: We detected", length(ddMS2POS_in),"positive ddMS .ms2 files in the folder: ", fileName," ...If this incorrect, check that you have 'p', 'P', 'pos', or 'POS' at the end of the file name and you must have a 'dd' within the name. OR Remove the folder: ", fileName))
@@ -2656,21 +2656,21 @@ for(i in seq_len(lengthFoldersToRun)){
   if(length(AIFMS2NEG_in) == 0){
     print(paste("CAUTION: We detected", length(AIFMS2NEG_in),"negative AIF .ms2 files in the folder: ", fileName," ...If this incorrect, check that you have ('AIF') and ('n', 'N', 'neg', or 'NEG') at the end of the file name. OR Remove the folder: ", fileName))
   }
-  
+
   FeatureTable_NEG <- list.files(path=fpath, pattern="[nNgG]\\.csv", ignore.case=FALSE)
   if(length(FeatureTable_NEG) > 1){
     stop(paste("ERROR: You should only have 1 Negative mode Feature Table... we detected", length(FeatureTable_NEG)," Feature Tables in the folder:", fileName))
   }else if(length(FeatureTable_NEG) == 0){
     print(paste("CAUTION: Could not find any negative mode Feature Tables... we detected", length(FeatureTable_NEG)," Feature Tables in the folder: ", fileName," ...If this incorrect, check that you have an 'n', 'N', 'neg', or 'NEG' at the end of the file name. OR Remove the folder: ", fileName))
   }
-  
+
   FeatureTable_POS <- list.files(path=fpath, pattern="[PpSs]\\.csv", ignore.case=FALSE)
   if(length(FeatureTable_POS) > 1){
     stop(paste("ERROR: You should only have 1 Positive mode Feature Table... we detected", length(FeatureTable_POS)," Feature Tables in the folder:", fileName))
   }else if(length(FeatureTable_POS) == 0){
     print(paste("CAUTION: Could not find any Positive mode Feature Tables... we detected", length(FeatureTable_POS)," Feature Tables in the folder: ", fileName," ...If this incorrect, check that you have an 'p', 'P', 'pos', or 'POS' at the end of the file name. OR Remove the folder: ", fileName))
   }
-  
+
   #Negative/Positive mode sample names (took .ms2 files and dropped the ".ms2")
   ExtraSampleNameddMSNEG_in <- vector()
   ExtraSampleNameddMSPOS_in <- vector()
@@ -2680,7 +2680,7 @@ for(i in seq_len(lengthFoldersToRun)){
   for(j in seq_len(length(ddMS2POS_in))){   ExtraSampleNameddMSPOS_in[j] <- sub("\\.\\w+", "", ddMS2POS_in[j])    }
   for(j in seq_len(length(AIFMS2NEG_in))){   ExtraSampleNameAIFNEG_in[j] <- sub("\\.\\w+", "", AIFMS2NEG_in[j])    }
   for(j in seq_len(length(AIFMS2POS_in))){   ExtraSampleNameAIFPOS_in[j] <- sub("\\.\\w+", "", AIFMS2POS_in[j])    }
-  
+
   runPosddMS <- FALSE
   runNegddMS <- FALSE
   runPosAIF <- FALSE
@@ -2693,7 +2693,7 @@ for(i in seq_len(lengthFoldersToRun)){
   }
   if(length(AIFMS2NEG_in) != 0 && length(AIFMS1NEG_in) != 0 && length(FeatureTable_NEG) == 1){  runNegAIF <- TRUE   }
   if(length(AIFMS2POS_in) != 0 && length(AIFMS1POS_in) != 0 && length(FeatureTable_POS) == 1){  runPosAIF <- TRUE   }
-  
+
   #Create output file structure
   #Shrimp
   #--AIF
@@ -2713,7 +2713,7 @@ for(i in seq_len(lengthFoldersToRun)){
   #----PosByClass
   #------Additional_Files
   #------Confirmed_Lipids
-  
+
   if(length(foldersToRun)==0){
     #1 root folder
     OutputDirectory<-file.path(InputDirectory, "Output",sep="")
@@ -2787,8 +2787,8 @@ for(i in seq_len(lengthFoldersToRun)){
       }
     }
   }#end else
-  
-  
+
+
   #### Run the libraries and input data ####
   NegClassDDLib <- FALSE
   PosDDLib <- FALSE
@@ -2796,20 +2796,21 @@ for(i in seq_len(lengthFoldersToRun)){
   PosClassDDLib <- FALSE
   NegAIFLib <- FALSE
   PosAIFLib <- FALSE
-  
+
   #NEG
   LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
   LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "NEG" & toupper(LibraryCriteria[,6]) == "FALSE",] #subset LibraryCriteria to find negative libraries
   LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,4]) == "TRUE",] #subset LibraryCriteria to find ddMS libraries to run
-  
+
   if(runNegddMS && nrow(LibraryCriteria)>0){
     NegDDLib <- TRUE
     FeatureTable_dir_in<-file.path(fpath, FeatureTable_NEG)
     cat(paste0("Reading in file:\t", FeatureTable_NEG,"\nFrom Directory:\t\t", FeatureTable_dir_in,"\n"))
     FeatureList_in <- ReadFeatureTable(FeatureTable_dir_in)
     # Create list of dataframes with all ms2 data
-    MS2_df_list <- list()
+
     length_ddMS2NEG_in <- length(ddMS2NEG_in)
+    MS2_df_list <- vector("list", length_ddMS2NEG_in)
     nrow_all_scans <- 0
     for (c in 1:length_ddMS2NEG_in){
       MS2_dir_in <- file.path(fpath, ddMS2NEG_in[c])
@@ -2853,7 +2854,7 @@ for(i in seq_len(lengthFoldersToRun)){
       OutputInfo <- c(MS2_dir_in, ExtraSample, FeatureTable_dir_in)
       Neg_rawMSMS_List <- c()
       nrow_LibraryCriteria <- nrow(LibraryCriteria)
-      
+
       for(i in seq_len(nrow_LibraryCriteria)){
         # message(paste(i, "/", nrow_LibraryCriteria, sep = ""))
         LibraryFile <- file.path(InputLibrary, LibraryCriteria[i,1]) #create directory/file of each library
@@ -2869,9 +2870,52 @@ for(i in seq_len(lengthFoldersToRun)){
     # Export MSMS combined file
     # write.csv(Neg_rawMSMS, file.path(InputDirectory, "Output/Neg_rawMSMS_Example2.csv"), row.names = FALSE, col.names = TRUE, na = "")
   }
-  
-  # stop()
-  
+
+  #NEG BY CLASS
+  LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
+  LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "NEG" & toupper(LibraryCriteria[,6]) == "TRUE",] #subset LibraryCriteria to find negative libraries
+  LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,4]) == "TRUE",] #subset LibraryCriteria to find ddMS libraries to run
+  if(runNegddMS && nrow(LibraryCriteria)>0){
+    NegClassDDLib <- TRUE
+    FeatureTable_dir_in<-file.path(fpath, FeatureTable_NEG)
+    cat(paste0("Reading in file:\t", FeatureTable_NEG,"\nFrom Directory:\t\t", FeatureTable_dir_in,"\n"))
+    FeatureList_in <- ReadFeatureTable(FeatureTable_dir_in)
+    length_ddMS2NEG_in <- length(ddMS2NEG_in)
+    # Run RunTargeted
+    for (c in 1:length_ddMS2NEG_in){
+      # message(paste("c = ", c, sep = ""))
+      cat(paste0("Reading in file:\t", ddMS2NEG_in[c],"\nFrom Directory:\t\t", MS2_dir_in,"\n"))
+      ExtraSample<-ExtraSampleNameddMSNEG_in[c]
+      OutputInfo <- c(MS2_dir_in, ExtraSample, FeatureTable_dir_in)
+      nrow_LibraryCriteria <- nrow(LibraryCriteria)
+      if (ParallelComputing == TRUE) {
+        foreach (i = seq_len(nrow(LibraryCriteria)), .packages = c("sqldf")) %dopar% {
+          LibraryFile <- file.path(InputLibrary, LibraryCriteria[i,1]) #create directory/file of each library
+          OutputName <- paste(ExtraSample,"_",gsub('.{4}$', '', LibraryCriteria[i,1]), sep="") #get ms2 name and library name
+          ConfirmANDCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,2]), ";")))
+          ConfirmORCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,3]), ";")))
+          if(length(ConfirmANDCol)==0){ConfirmANDCol<-NULL}
+          if(length(ConfirmORCol)==0){ConfirmORCol<-NULL}
+          RunTargeted(MS2_df_list[[c]], FeatureList_in, LibraryFile, ParentMZcol_in, OutputDirectoryddMSNegByClass_in, OutputName, ConfirmORCol, ConfirmANDCol, OutputInfo, ddMS2NEG_in[c], "NegByClass")
+        }
+      } else {
+        for(i in seq_len(nrow_LibraryCriteria)){
+          # message(paste(i, "/", nrow_LibraryCriteria, sep = ""))
+          LibraryFile <- file.path(InputLibrary, LibraryCriteria[i,1]) #create directory/file of each library
+          OutputName <- paste(ExtraSample,"_",gsub('.{4}$', '', LibraryCriteria[i,1]), sep="") #get ms2 name and library name
+          ConfirmANDCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,2]), ";")))
+          ConfirmORCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,3]), ";")))
+          if(length(ConfirmANDCol)==0){ConfirmANDCol<-NULL}
+          if(length(ConfirmORCol)==0){ConfirmORCol<-NULL}
+          RunTargeted(MS2_df_list[[c]], FeatureList_in, LibraryFile, ParentMZcol_in, OutputDirectoryddMSNegByClass_in, OutputName, ConfirmORCol, ConfirmANDCol, OutputInfo, ddMS2NEG_in[c], "NegByClass")
+        }
+      }
+    }
+    print(paste("Finished Negative by class ddMS analysis", timestamp(), sep = " --> "))
+    # Export MSMS combined file
+    # write.csv(Neg_rawMSMS, file.path(InputDirectory, "Output/Neg_rawMSMS_Example3.csv"), row.names = FALSE, col.names = TRUE, na = "")
+  }
+
   #POS ddMS
   LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
   LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "POS" & toupper(LibraryCriteria[,6]) == "FALSE",] #subset LibraryCriteria to find positive libraries(not pos-by-class)
@@ -2882,8 +2926,9 @@ for(i in seq_len(lengthFoldersToRun)){
     cat(paste0("Reading in file:\t", FeatureTable_POS,"\nFrom Directory:\t\t", FeatureTable_dir_in,"\n"))
     FeatureList_in <- ReadFeatureTable(FeatureTable_dir_in)
     # Create list of dataframes with all ms2 data
-    MS2_df_list <- list()
+
     length_ddMS2POS_in <- length(ddMS2POS_in)
+    MS2_df_list <- vector("list", length_ddMS2POS_in)
     nrow_all_scans <- 0
     for (c in 1:length_ddMS2POS_in){
       MS2_dir_in <- file.path(fpath, ddMS2POS_in[c])
@@ -2954,52 +2999,8 @@ for(i in seq_len(lengthFoldersToRun)){
     # Export MSMS combined file
     # write.csv(Pos_rawMSMS, file.path(InputDirectory, "Output/Pos_rawMSMS_Example2.csv"), row.names = FALSE, col.names = TRUE, na = "")
   }
-  
-  #NEG BY CLASS
-  LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
-  LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "NEG" & toupper(LibraryCriteria[,6]) == "TRUE",] #subset LibraryCriteria to find negative libraries
-  LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,4]) == "TRUE",] #subset LibraryCriteria to find ddMS libraries to run
-  if(runNegddMS && nrow(LibraryCriteria)>0){
-    NegClassDDLib <- TRUE
-    FeatureTable_dir_in<-file.path(fpath, FeatureTable_NEG)
-    cat(paste0("Reading in file:\t", FeatureTable_NEG,"\nFrom Directory:\t\t", FeatureTable_dir_in,"\n"))
-    FeatureList_in <- ReadFeatureTable(FeatureTable_dir_in)
-    length_ddMS2NEG_in <- length(ddMS2NEG_in)
-    # Run RunTargeted
-    for (c in 1:length_ddMS2NEG_in){
-      # message(paste("c = ", c, sep = ""))
-      cat(paste0("Reading in file:\t", ddMS2NEG_in[c],"\nFrom Directory:\t\t", MS2_dir_in,"\n"))
-      ExtraSample<-ExtraSampleNameddMSNEG_in[c]
-      OutputInfo <- c(MS2_dir_in, ExtraSample, FeatureTable_dir_in)
-      nrow_LibraryCriteria <- nrow(LibraryCriteria)
-      if (ParallelComputing == TRUE) {
-        foreach (i = seq_len(nrow(LibraryCriteria)), .packages = c("sqldf")) %dopar% {
-          LibraryFile <- file.path(InputLibrary, LibraryCriteria[i,1]) #create directory/file of each library
-          OutputName <- paste(ExtraSample,"_",gsub('.{4}$', '', LibraryCriteria[i,1]), sep="") #get ms2 name and library name
-          ConfirmANDCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,2]), ";")))
-          ConfirmORCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,3]), ";")))
-          if(length(ConfirmANDCol)==0){ConfirmANDCol<-NULL}
-          if(length(ConfirmORCol)==0){ConfirmORCol<-NULL}
-          RunTargeted(MS2_df_list[[c]], FeatureList_in, LibraryFile, ParentMZcol_in, OutputDirectoryddMSNegByClass_in, OutputName, ConfirmORCol, ConfirmANDCol, OutputInfo, ddMS2NEG_in[c], "NegByClass")
-        }
-      } else {
-        for(i in seq_len(nrow_LibraryCriteria)){
-          # message(paste(i, "/", nrow_LibraryCriteria, sep = ""))
-          LibraryFile <- file.path(InputLibrary, LibraryCriteria[i,1]) #create directory/file of each library
-          OutputName <- paste(ExtraSample,"_",gsub('.{4}$', '', LibraryCriteria[i,1]), sep="") #get ms2 name and library name
-          ConfirmANDCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,2]), ";")))
-          ConfirmORCol <- as.numeric(unlist(strsplit(as.character(LibraryCriteria[i,3]), ";")))
-          if(length(ConfirmANDCol)==0){ConfirmANDCol<-NULL}
-          if(length(ConfirmORCol)==0){ConfirmORCol<-NULL}
-          RunTargeted(MS2_df_list[[c]], FeatureList_in, LibraryFile, ParentMZcol_in, OutputDirectoryddMSNegByClass_in, OutputName, ConfirmORCol, ConfirmANDCol, OutputInfo, ddMS2NEG_in[c], "NegByClass")
-        }
-      }
-    }
-    print(paste("Finished Negative by class ddMS analysis", timestamp(), sep = " --> "))
-    # Export MSMS combined file
-    # write.csv(Neg_rawMSMS, file.path(InputDirectory, "Output/Neg_rawMSMS_Example3.csv"), row.names = FALSE, col.names = TRUE, na = "")
-  }
-  
+
+
   #POS BY CLASS
   LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
   LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "POS" & toupper(LibraryCriteria[,6]) == "TRUE",] #subset LibraryCriteria to find positive class libraries
@@ -3044,7 +3045,7 @@ for(i in seq_len(lengthFoldersToRun)){
     # Export MSMS combined file
     # write.csv(Pos_rawMSMS, file.path(InputDirectory, "Output/Pos_rawMSMS_Example3.csv"), row.names = FALSE, col.names = TRUE, na = "")
   }
-  
+
   ####AIF####
   #Neg AIF
   LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
@@ -3063,11 +3064,11 @@ for(i in seq_len(lengthFoldersToRun)){
       MS1_dir_in <- file.path(fpath, AIFMS1NEG_in[c])
       cat(paste0("Reading in file:\t", AIFMS1NEG_in[c],"\nFrom Directory:\t\t", MS1_dir_in,"\n"))
       MS1_df_in <- createDataFrame(MS1_dir_in)
-      
+
       MS2_dir_in <- file.path(fpath, AIFMS2NEG_in[c])
       cat(paste0("Reading in file:\t", AIFMS2NEG_in[c],"\nFrom Directory:\t\t", MS2_dir_in,"\n"))
       MS2_df_in <- createDataFrame(MS2_dir_in)
-      
+
       ExtraSample<-ExtraSampleNameAIFNEG_in[c]
       OutputInfo <- c(MS2_dir_in, ExtraSample, FeatureTable_dir_in, MS1_dir_in)
       if (ParallelComputing == TRUE) {
@@ -3096,7 +3097,7 @@ for(i in seq_len(lengthFoldersToRun)){
     }
     print(paste("Finished Negative AIF analysis", timestamp(), sep = " --> "))
   }
-  
+
   #Pos AIF
   LibraryCriteria <- read.csv(LibCriteria) #Read-in Library ID criteria (csv) located in the LibrariesReducedAdducts folder
   LibraryCriteria <- LibraryCriteria[toupper(LibraryCriteria[,7]) == "POS",] #subset LibraryCriteria to find positive class libraries
@@ -3114,11 +3115,11 @@ for(i in seq_len(lengthFoldersToRun)){
       MS1_dir_in <- file.path(fpath, AIFMS1POS_in[c])
       cat(paste0("Reading in file:\t", AIFMS1POS_in[c],"\nFrom Directory:\t\t", MS1_dir_in,"\n"))
       MS1_df_in <- createDataFrame(MS1_dir_in)
-      
+
       MS2_dir_in <- file.path(fpath, AIFMS2POS_in[c])
       cat(paste0("Reading in file:\t", AIFMS2POS_in[c],"\nFrom Directory:\t\t", MS2_dir_in,"\n"))
       MS2_df_in <- createDataFrame(MS2_dir_in)
-      
+
       ExtraSample<-ExtraSampleNameAIFPOS_in[c]
       OutputInfo <- c(MS2_dir_in, ExtraSample, FeatureTable_dir_in, MS1_dir_in)
       if (ParallelComputing == TRUE) {
@@ -3147,7 +3148,7 @@ for(i in seq_len(lengthFoldersToRun)){
     }
     print(paste("Finished Positive AIF analysis", timestamp(), sep = " --> "))
   }
-  
+
   #Compilation/ID code for reduced confirmed files
   if(runPosAIF || runPosddMS){
     print(paste("Creating Identifications for Positive Mode", timestamp(), sep = " --> "))
@@ -3167,7 +3168,7 @@ for(i in seq_len(lengthFoldersToRun)){
       Scoring(file.path(InputDirectory,"Output/PosIDed_Fragments.csv"), OutDir = file.path(InputDirectory,"Output"), Mass_col = MZColumn, Retention_col = RTColumn, RowStartForFeatureTableData-1, RT_flagging, KMD_Bin_Window = (PrecursorMassAccuracy*2), upper, lower, RepeatingUnits_dir)
     }
   }
-  
+
   if(runPosAIF & runPosddMS){
     ddMS2directory<-file.path(OutputDirectoryddMSPos_in,"Confirmed_Compounds")
     Classdirectory<-file.path(OutputDirectoryddMSPosByClass_in,"Confirmed_Compounds")
@@ -3183,25 +3184,25 @@ for(i in seq_len(lengthFoldersToRun)){
       Scoring(file.path(InputDirectory,"Output/PosIDed_Fragments.csv"), OutDir = file.path(InputDirectory,"Output"), Mass_col = MZColumn, Retention_col = RTColumn, RowStartForFeatureTableData-1, RT_flagging, KMD_Bin_Window = (PrecursorMassAccuracy*2), upper, lower, RepeatingUnits_dir)
     }
   }
-  
+
   if(runPosAIF & !runPosddMS){
     ddMS2directory<-"Nothing"
     Classdirectory<-"Nothing"
     AIFdirectory<-file.path(OutputDirectoryAIFPos_in,"Confirmed_Compounds")
     CreateIDs(file.path(fpath,FeatureTable_POS), ddMS2directory, Classdirectory, AIFdirectory, ImportLibPOS, OutputDirectory, PosDDLib, PosClassDDLib, PosAIFLib, "Pos")
   }
-  
+
   if(runNegAIF || runNegddMS){
     print(paste("Creating Identifications for Negative Mode", timestamp(), sep = " --> "))
   }
-  
+
   if(runNegAIF & !runNegddMS){
     ddMS2directory <- "Nothing"
     Classdirectory <- "Nothing"
     AIFdirectory <- file.path(OutputDirectoryAIFNeg_in,"Confirmed_Compounds")
     CreateIDs(file.path(fpath,FeatureTable_NEG), ddMS2directory, Classdirectory, AIFdirectory, ImportLibNEG, OutputDirectory, NegDDLib, NegClassDDLib, NegAIFLib, "Neg")
   }
-  
+
   if(runNegddMS & !runNegAIF){
     ddMS2directory <- file.path(OutputDirectoryddMSNeg_in,"Confirmed_Compounds")
     Classdirectory <- file.path(OutputDirectoryddMSNegByClass_in,"Confirmed_Compounds")
@@ -3218,7 +3219,7 @@ for(i in seq_len(lengthFoldersToRun)){
       Scoring(file.path(InputDirectory,"Output/NegIDed_Fragments.csv"), OutDir = file.path(InputDirectory,"Output"), Mass_col = MZColumn, Retention_col = RTColumn, RowStartForFeatureTableData-1, RT_flagging, KMD_Bin_Window = (PrecursorMassAccuracy*2), upper, lower, RepeatingUnits_dir)
     }
   }
-  
+
   if(runNegddMS & runNegAIF){
     ddMS2directory <- file.path(OutputDirectoryddMSNeg_in,"Confirmed_Compounds")
     Classdirectory <- file.path(OutputDirectoryddMSNegByClass_in,"Confirmed_Compounds")
@@ -3234,7 +3235,7 @@ for(i in seq_len(lengthFoldersToRun)){
       Scoring(file.path(InputDirectory,"Output/NegIDed_Fragments.csv"), OutDir = file.path(InputDirectory,"Output"), Mass_col = MZColumn, Retention_col = RTColumn, RowStartForFeatureTableData-1, RT_flagging, KMD_Bin_Window = (PrecursorMassAccuracy*2), upper, lower, RepeatingUnits_dir)
     }
   }
-  
+
   if(runNegddMS & runPosddMS){
     Neg <- read.csv(file.path(OutputDirectory, "NegIDed_Fragments.csv"), sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=TRUE)
     Neg <- as.matrix(Neg)
@@ -3246,14 +3247,14 @@ for(i in seq_len(lengthFoldersToRun)){
     ncol_Pos <- ncol(Pos)
     extra <- matrix("", nrow(Pos), 100 - ncol_Pos)
     Pos <- cbind(Pos, extra)
-    
+
     # Fix alignment
     if (ncol_Neg > ncol_Pos) {
       Pos[, (ncol_Neg - 8):ncol_Neg] <- Pos[, (ncol_Pos - 8):ncol_Pos]
     } else if (ncol_Pos > ncol_Neg) {
       Neg[, (ncol_Pos - 8):ncol_Pos] <- Neg[, (ncol_Neg - 8):ncol_Neg]
     }
-    
+
     Data <- rbind(Pos, Neg)
     end_col <- ncol(Data)
     if (!is.na(which(colSums(Data == "") == nrow(Data))[1] - 1)) {
@@ -3267,9 +3268,9 @@ for(i in seq_len(lengthFoldersToRun)){
       Scoring(file.path(InputDirectory,"Output/CombinedIDed_Fragments.csv"), OutDir = file.path(InputDirectory,"Output"), Mass_col = MZColumn, Retention_col = RTColumn, RowStartForFeatureTableData-1, RT_flagging, KMD_Bin_Window = (PrecursorMassAccuracy*2), upper, lower, RepeatingUnits_dir)
     }
   }
-  
+
   print(paste("Creating final MSMS export", timestamp(), sep = " --> "))
-  
+
   final_MSMS_export <- function(NegPosIDed_dir, FeatureList_in_dir, NegPos) {
     #Mandatory Parameters
     #NEW PAUL, ALWAYS Frag_Annotations.csv, place in library folder (should always be there)
@@ -3295,9 +3296,9 @@ for(i in seq_len(lengthFoldersToRun)){
     ID_Method <- "Fragments"
     #PAUL: The output should be Neg_rawMSMS.csv in the same directory as NegIDed_FIN.csv, name wont change
     output_file <- paste(ID_Method,"_Appended.csv",sep="")
-    
+
     #Optional inputs specific for aligning features mass using feature numbers for Visualizer platform, turned off for normal use
-    
+
     #NEW PAUL, ALWAYS NL_Annotations.csv, found in library folder (place there)
     if (NegPos == "Neg") {
       NL_dir <- file.path(InputLibrary, "NL_Annotations_Neg.csv")
@@ -3319,8 +3320,8 @@ for(i in seq_len(lengthFoldersToRun)){
     #PAUL: New file to read in
     NL_lib <- read.csv(NL_dir, sep=",", na.strings="NA", dec=".", strip.white=TRUE,header=FALSE, check.names = FALSE)
     NL_lib <- as.matrix(NL_lib)
-    
-    
+
+
     ############Code##############
     #PAUL: MSMS file should already exist as a data frame no nead to read in
     if (NegPos == "Neg") {
@@ -3331,7 +3332,7 @@ for(i in seq_len(lengthFoldersToRun)){
     #PAUL: New file to read in "Frag_Annotations.csv"
     Frag_lib_df <- read.csv(Frag_lib_dataFrame_file_directory, sep=",", na.strings="NA", dec=".", strip.white=TRUE, header=FALSE, check.names = FALSE)
     rawMSMS_df <- as.matrix(rawMSMS_df)
-    
+
     #Filters for the MSMS Data (only keep fragments below precursor masses, intensity threshold)
     #keep only those below precursor mass + threshold
     Frags_Below_Precursor_Index<-c(1,which(as.numeric(rawMSMS_df[,Frag_MZ_col])<(as.numeric(rawMSMS_df[,PrecursorMZCol_MSMS])+FilterAbovePrecursor))) ## Remove that first 1??
@@ -3339,9 +3340,9 @@ for(i in seq_len(lengthFoldersToRun)){
     #keep only those above intensity threshold
     Intensity_Threshold_Index<-c(1,which(as.numeric(rawMSMS_df[,IntensityCol_MSMS])>Intensity_Threshold))
     rawMSMS_df<-rawMSMS_df[Intensity_Threshold_Index,]
-    
+
     ## Align features to MSMS Table
-    
+
     FeatureList_in <- as.matrix(read.csv(FeatureList_in_dir, sep=",", na.strings="NA", dec=".", strip.white=TRUE, header=TRUE, check.names = FALSE))
     nrow_FeatureList_in <- nrow(FeatureList_in)
     MZ_Append <- rev(as.numeric(FeatureList_in[, 6])) # Column should be constant (future error?)
@@ -3351,7 +3352,7 @@ for(i in seq_len(lengthFoldersToRun)){
     RT_rawMSMS <- as.numeric(rawMSMS_df[, MSMS_scan_RT_col])
     for (j in 2:nrow_FeatureList_in) { # Row should be constant (future error?)
       ## Old, more nuanced approach
-      
+
       # message(paste(j, "/", nrow_FeatureList_in, sep = ""))
       # MZ_feature <- as.numeric(as.character(FeatureList_in[j, 1]))
       # MZ_MS2 <- as.numeric(Neg_rawMSMS[, 5])
@@ -3374,9 +3375,9 @@ for(i in seq_len(lengthFoldersToRun)){
       # if (length(rows_to_update) > 0) {
       #   Neg_rawMSMS[rows_to_update, 2] <- feat
       # }
-      
+
       ## Simplified approach
-      
+
       MZ_Append_current <- MZ_Append[j]
       RT_Append_current <- RT_Append[j]
       IDs_Append_current <- IDs_Append[j]
@@ -3388,41 +3389,41 @@ for(i in seq_len(lengthFoldersToRun)){
       MZ_RT_int <- intersect(MZ_Index, RT_Index)
       rawMSMS_df[MZ_RT_int,FeatureCol_MSMS] <- IDs_Append_current
     }
-    
+
     #Filters remove all MSMS scans without features
     #which rows have features
     Features_MSMSfile<-as.numeric(rawMSMS_df[,FeatureCol_MSMS])
     AllFeature_Index<-c(which(!is.na(Features_MSMSfile)))
     rawMSMS_df<-rawMSMS_df[AllFeature_Index,]
-    
+
     ##consolidate the Fragment Screening list first before searching, otherwise values will just be overwritten, still values will be over written if within ppm but not exactly the same
     Frag_lib_df<-aggregate(Frag_lib_df, list(Frag_lib_df[,MZ_Column_Frag_lib]), FUN=function(x) paste(x,collapse=";"))
     Frag_lib_df <- as.matrix(Frag_lib_df)
     #check if works for other formats COULD ERROR
     Frag_lib_df<-Frag_lib_df[,-2]
-    
+
     ##(Same as above for NL) consolidate the Fragment Screening list first before searching, otherwise values will just be overwritten, still values will be over written if within ppm but not exactly the same
     NL_lib<-aggregate(NL_lib, list(NL_lib[,1]), FUN=function(x) paste(x,collapse=";"))
     NL_lib <- as.matrix(NL_lib)
     #check if works for other formats COULD ERROR
     NL_lib<-NL_lib[,-2]
-    
+
     #Add 6 columns for data to be append on to: Feature m/z, Name, and ppm error
     nrowrawMSMS <- nrow(rawMSMS_df)
     ID_and_ppm_cols<-matrix("",nrowrawMSMS,6)
     rawMSMS_df <- cbind(rawMSMS_df,ID_and_ppm_cols)
     colnames(rawMSMS_df)[(ncol(rawMSMS_df)-5):ncol(rawMSMS_df)] <- c("Feature m/z","NL mz",ID_Method,"ppm_Error","NL","ppm_Error_NL")
-    
+
     MSMS_PrecursorMZ_Col<-ncol(rawMSMS_df)-5
     NL_Col<-ncol(rawMSMS_df)-4
     Name_col<-ncol(rawMSMS_df)-3
     ppm_col<-ncol(rawMSMS_df)-2
     NL_Name_col<-ncol(rawMSMS_df)-1
     NL_ppm_col<-ncol(rawMSMS_df)
-    
+
     nrowFrag_lib <- nrow(Frag_lib_df)
     ncolrawMSMS <- ncol(rawMSMS_df)
-    
+
     ##Appending Precursor Masses to MSMS Table for NL Searching (inputs for ease below)
     # MZcol_NegPosIDed
     # FeatureCol_NegPosIDed
@@ -3442,11 +3443,11 @@ for(i in seq_len(lengthFoldersToRun)){
     PrecursorMZs<-as.numeric(rawMSMS_df[AllFeature_Index,MSMS_PrecursorMZ_Col])
     FragmentMZs<-as.numeric(rawMSMS_df[AllFeature_Index,Frag_MZ_col])
     rawMSMS_df[AllFeature_Index,NL_Col] <- PrecursorMZs-FragmentMZs
-    
+
     ## Identify neutral losses (NLs) (could make this a function since used twice, also will be used in Pos and Neg... and for multiple files... but then the whole things needs to be a function)
     MZ_NL_lib <- as.numeric(NL_lib[, 1])
     MZ_NL_MSMS <- as.numeric(rawMSMS_df[, NL_Col])
-    
+
     for(o in 1:nrow(NL_lib)){
       MZ_Append_current <- MZ_NL_lib[o]
       IDs_Append <- NL_lib[o, 2]
@@ -3458,12 +3459,12 @@ for(i in seq_len(lengthFoldersToRun)){
       rawMSMS_df[MZ_Index,Name_col] <- IDs_Append
       rawMSMS_df[MZ_Index,ppm_col] <- ppm_error[MZ_Index]
     }
-    
+
     MZ_Append <- as.numeric(Frag_lib_df[, MZ_Column_Frag_lib])
     # Frag_lib_df[, RT_Column_Frag_lib] <- as.numeric(as.character(Frag_lib_df[, RT_Column_Frag_lib]))
     MZ_rawMSMS <- as.numeric(rawMSMS_df[, Frag_MZ_col])
     # rawMSMS_df[, MSMS_scan_RT_col] <- as.numeric(as.character(rawMSMS_df[, MSMS_scan_RT_col]))
-    
+
     ## Identify Fragments
     for(o in Data_Start_Row_Frag_lib:nrowFrag_lib){
       MZ_Append_current <- MZ_Append[o]
@@ -3477,31 +3478,31 @@ for(i in seq_len(lengthFoldersToRun)){
       rawMSMS_df[MZ_Index,Name_col] <- IDs_Append
       rawMSMS_df[MZ_Index,ppm_col] <- ppm_error[MZ_Index]
     }
-    
+
     # Remove obsolete columns
     rawMSMS_df <- cbind(rawMSMS_df[, 1:7], rawMSMS_df[, 10:15])
-    
+
     if (NegPos == "Neg") {
       write.csv(rawMSMS_df, file.path(InputDirectory, "Output/Neg_rawMSMS.csv"), row.names = FALSE, na = "")
     } else if (NegPos == "Pos") {
       write.csv(rawMSMS_df, file.path(InputDirectory, "Output/Pos_rawMSMS.csv"), row.names = FALSE, na = "")
     }
   }
-  
+
   if (runNegddMS) {
     NegPosIDed_dir <- file.path(InputDirectory, "Output/NegIDed.csv")
     FeatureList_in_dir <- file.path(InputDirectory, "Output/NegIDed_FIN.csv")
     final_MSMS_export(NegPosIDed_dir, FeatureList_in_dir, "Neg")
     # write.csv(rawMSMS_df, file.path(InputDirectory, "Output/Neg_rawMSMS.csv"), row.names = FALSE, col.names = TRUE, na = "")
-  } 
-  
+  }
+
   if (runPosddMS) {
     NegPosIDed_dir <- file.path(InputDirectory, "Output/PosIDed.csv")
     FeatureList_in_dir <- file.path(InputDirectory, "Output/PosIDed_FIN.csv")
     final_MSMS_export(NegPosIDed_dir, FeatureList_in_dir, "Pos")
     # write.csv(rawMSMS_df, file.path(InputDirectory, "Output/Pos_rawMSMS.csv"), row.names = FALSE, col.names = TRUE, na = "")
   }
-  
+
 }#end folder loop
 
 options(warn=0)#suppress warning off
@@ -3707,16 +3708,16 @@ arguments = list(
   ,use_min_i_filter = FALSE
   ,cols = c("rt", "mz", "intensity")
   ,AggFUN = max #min, mean, or max: sum will sum the mz and rt would need more code
-  ,UseAgg = TRUE 
-  ,IsoThreshold = PrecursorMassAccuracy/2 
+  ,UseAgg = TRUE
+  ,IsoThreshold = PrecursorMassAccuracy/2
 )
 #
 
-if (length(GroupCSVDirectory)>0) { 
+if (length(GroupCSVDirectory)>0) {
   arguments$FeatureID_SkipRows = c(1)
 }
 
-suppressWarnings(if (runNegddMS) { 
+suppressWarnings(if (runNegddMS) {
   arguments$fn_FeatureID<-"NegIDed_FIN.csv"
   arguments$fn_eic_output<-"Neg_Feature_EICs.csv"
   arguments$fn_MS1_output<-"Neg_Feature_MS1s.csv"
@@ -3728,7 +3729,7 @@ suppressWarnings(if (runNegddMS) {
   }
 })
 
-suppressWarnings(if (runPosddMS) { 
+suppressWarnings(if (runPosddMS) {
   arguments$fn_FeatureID<-"PosIDed_FIN.csv"
   arguments$fn_eic_output<-"Pos_Feature_EICs.csv"
   arguments$fn_MS1_output<-"Pos_Feature_MS1s.csv"
