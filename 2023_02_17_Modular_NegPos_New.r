@@ -1,4 +1,4 @@
-`##Jeremy Koelmel  jeremykoelmel@gmail.com
+##Jeremy Koelmel  jeremykoelmel@gmail.com
 ##Nick Kroeger    nkroeger.cs@gmail.com
 ##Paul Stelben    paul.stelben@yale.edu
 
